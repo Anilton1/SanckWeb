@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/alterados.css"></link>
+	<link rel="stylesheet" type="text/css"
+		href="lib/bootstrap3/css/bootstrap.css"></link>
+
+</h:head>
+<h:body>
+	<div class="container">
+		<div class="row">
+			<h:form id="formAlterarInstituicao">
+				<p:messages id="messageAlterar" showDetail="true" showSummary="true" />
+				<p:fieldset legend=" Informações Básicas" toggleable="true"
+					toggleSpeed="450">
+					<div class="ui-grid-col-6">
+						<div id="form-group">
+							<h:outputLabel for="Tipo" value="Tipo da Instituição" />
+							<p:selectOneRadio id="Tipo"
+								value="#{ControleInstituicao.instituicaoSelecionado.tipo}"
+								columns="1" label="tpInstituicao" required="true"
+								requiredMessage="Escolha o tipo da instituição!">
+								<f:selectItem itemLabel="Escola " itemValue="false" />
+								<f:selectItem itemLabel="Creche " itemValue="true" />
+								<p:ajax
+									update="panelLancheManha panelLancheTarde cabecalhoLancheManha cabecalhoLancheTarde lblCafeDaManhaBP lblCafeDaManhaMF lblCafeDaManhaAAE lblAlmocoBP lblAlmocoMF lblAlmocoAAE lblJantarBP lblJantarMF"
+									event="change" />
+							</p:selectOneRadio>
+							<p:messages for="Tipo" />
+						</div>
+					</div>
+					<div class="ui-grid-col-6">
+						<div id="form-group">
+							<h:outputLabel for="Nome" value="Nome:" />
+							<p:inputText id="Nome" styleClass="campo_alt"
+								value="#{ControleInstituicao.instituicaoSelecionado.nomeInstituicao}"
+								required="true" label="nomeInstituicao"
+								requiredMessage="O nome da escola não pode estar vazio!" />
+							<p:messages for="Nome" />
+						</div>
+						<div id="form-group">
+							<h:outputLabel for="rotaInstituicao" value="Rota:" />
+							<h:selectOneMenu value="#{ControleInstituicao.rota}"
+								id="rotaInstituicao" styleClass="campo_alt" required="true"
+								requiredMessage="A rota não pode estar vazia!"
+								label="rotaInstituicao" converter="RotaConverter">
+								<f:selectItem itemLabel="--Selecione--" noSelectionOption="true" />
+								<f:selectItems var="rotaInstituicao"
+									value="#{ControleRota.listarRotas()}"
+									itemLabel="#{rotaInstituicao.nome}"
+									itemValue="#{rotaInstituicao}" />
+
+							</h:selectOneMenu>
+							<p:messages for="rotaInstituicao" />
+							<br></br>
+						</div>
+					</div>
+				</p:fieldset>
+
+				<p:separator />
+
+				<p:fieldset legend="Endereço" toggleable="true" toggleSpeed="450">
+					<div class="ui-grid-col-6">
+						<div id="form-group">
+							<h:outputLabel for="Cep" value="Cep:" />
+							<p:inputMask id="Cep" styleClass="campo_alt"
+								value="#{ControleInstituicao.aEndereco.cep}" mask="99999-999"
+								label="cepInstituicao" required="true"
+								requiredMessage="O CEP não pode estar vazio!">
+								<p:messages for="Cep" />
+							</p:inputMask>
+						</div>
+						<div id="form-group">
+							<h:outputLabel for="Rua" value="Rua:" />
+							<p:inputText id="Rua" styleClass="campo_alt"
+								value="#{ControleInstituicao.aEndereco.rua}"
+								label="ruaInstituicao" required="true"
+								requiredMessage="A Rua não pode estar vazia!" />
+							<p:messages for="Rua" />
+						</div>
+						<div id="form-group">
+							<h:outputLabel for="Bairro" value="Bairro:" />
+							<p:inputText id="Bairro" styleClass="campo_alt"
+								value="#{ControleInstituicao.aEndereco.bairro}"
+								label="bairroInstituicao" required="true"
+								requiredMessage="O Bairro não pode estar vazio!"
+								validatorMessage="Descrição inválida! Favor preencher sem caracteres especiais.">
+								<f:validateRegex pattern="^[a-zA-Z Á-ú 0-9]+$" />
+								<p:messages for="Bairro" />
+							</p:inputText>
+						</div>
+						<div id="form-group">
+							<h:outputLabel for="Contatos" value="Contatos:" />
+							<p:inputTextarea id="Contatos" rows="6" cols="37"
+								autoResize="true"
+								value="#{ControleInstituicao.aEndereco.contato}" />
+						</div>
+					</div>
+					<div class="ui-grid-col-6">
+						<div id="form-group">
+							<h:outputLabel for="Cidade" value="Cidade:" />
+							<p:inputText id="Cidade" styleClass="campo_alt"
+								value="#{ControleInstituicao.aEndereco.cidade}"
+								label="cidadeInstituicao" required="true"
+								requiredMessage="A Cidade não pode estar vazia!"
+								validatorMessage="Descrição inválida! Favor preencher sem números ou caracteres especiais.">
+								<f:validateRegex pattern="^[a-zA-Z Á-ú]+$" />
+								<p:messages for="Cidade" />
+							</p:inputText>
+						</div>
+
+						<div id="form-group">
+							<h:outputLabel for="Estado" value="Estado:" />
+							<p:inputText id="Estado" styleClass="campo_alt"
+								value="#{ControleInstituicao.aEndereco.estado}"
+								label="estadoInstituicao" required="true"
+								requiredMessage="O Estado não pode estar vazio!"
+								validatorMessage="Descrição inválida! Favor preencher sem números ou caracteres especiais.">
+								<f:validateRegex pattern="^[a-zA-Z Á-ú]+$" />
+								<p:messages for="Estado" />
+							</p:inputText>
+						</div>
+
+						<div id="form-group">
+							<h:outputLabel for="Referência" value="Referência:" />
+							<p:inputTextarea id="Referência" rows="10" cols="37"
+								autoResize="true"
+								value="#{ControleInstituicao.aEndereco.referencia}" />
+						</div>
+
+					</div>
+				</p:fieldset>
+
+				<p:separator />
+
+				<p:fieldset legend="Quantidade de alunos por refeição"
+					toggleable="true" toggleSpeed="450">
+					<p:outputPanel id="cabecalhoLancheManha">
+
+						<p:outputPanel
+							rendered="#{ControleInstituicao.instituicaoSelecionado.tipo}">
+
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="Desjejum" />
+								<p:separator />
+							</div>
+
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="Lanche da manhã" />
+								<p:separator />
+							</div>
+						</p:outputPanel>
+
+						<p:outputPanel
+							rendered="#{ControleInstituicao.instituicaoSelecionado.tipo == false}">
+
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="Turno Manhã" />
+								<p:separator />
+							</div>
+						</p:outputPanel>
+					</p:outputPanel>
+
+					<div class="ui-grid ui-grid-responsive">
+						<div class="ui-grid-col-6">
+							<div id="form-group">
+								<p:outputPanel id="lblCafeDaManhaBP">
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo}">
+										<h:outputLabel for="Pre1" value="BERÇÁRIO 1: " />
+									</p:outputPanel>
+
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo == false}">
+										<h:outputLabel for="Pre1" value="PRÉ-FUNDAMENTAL: " />
+									</p:outputPanel>
+
+									<p:inputMask id="Pre1" styleClass="campo_alt_num" mask="9?99"
+										value="#{ControleInstituicao.turno1_1.qtdAlunos1}" />
+
+								</p:outputPanel>
+								<p:messages for="Pre1" />
+							</div>
+							<br />
+							<div id="form-group">
+								<p:outputPanel id="lblCafeDaManhaMF">
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo}">
+										<h:outputLabel for="Fund1" value="BERÇÁRIO 2: " />
+									</p:outputPanel>
+
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo == false}">
+										<h:outputLabel for="Fund1" value="ENSINO FUNDAMENTAL: " />
+									</p:outputPanel>
+
+									<p:inputMask id="Fund1" styleClass="campo_alt_num" mask="9?99"
+										value="#{ControleInstituicao.turno1_1.qtdAlunos2}" />
+
+								</p:outputPanel>
+								<p:messages for="Fund1" />
+							</div>
+							<br />
+
+							<div id="form-group">
+								<p:outputPanel id="lblCafeDaManhaAAE">
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo}">
+										<h:outputLabel for="AAE1" value="MATERNAL: " />
+									</p:outputPanel>
+
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo == false}">
+										<h:outputLabel for="AAE1" value="AAE: " />
+									</p:outputPanel>
+
+									<p:inputMask id="AAE1" styleClass="campo_alt_num" mask="9?99"
+										value="#{ControleInstituicao.turno1_1.qtdAlunos3}" />
+
+								</p:outputPanel>
+								<p:messages for="AAE1" />
+							</div>
+						</div>
+
+						<div class="ui-grid-col-6">
+							<div id="form-group">
+								<p:outputPanel id="panelLancheManha">
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo}">
+										<div class="ui-grid-col-6">
+											<div id="form-group">
+												<h:outputLabel for="Pre4" value="BERÇÁRIO 1: " />
+
+												<p:inputMask id="Pre4" styleClass="campo_alt_num"
+													mask="9?99"
+													value="#{ControleInstituicao.turno1_2.qtdAlunos1}" />
+
+												<p:messages for="Pre4" />
+											</div>
+											<br />
+
+											<div class="form-group">
+												<h:outputLabel for="Fund4" value="BERÇÁRIO 2: " />
+
+												<p:inputMask id="Fund4" styleClass="campo_alt_num"
+													mask="9?99"
+													value="#{ControleInstituicao.turno1_2.qtdAlunos2}" />
+
+												<p:messages for="Fund4" />
+											</div>
+											<br />
+
+											<div class="form-group">
+												<h:outputLabel for="AAE4" value="MATERNAL: " />
+
+												<p:inputMask id="AAE4" styleClass="campo_alt_num"
+													mask="9?99"
+													value="#{ControleInstituicao.turno1_2.qtdAlunos3}" />
+
+												<p:messages for="AAE4" />
+											</div>
+											<br />
+
+										</div>
+									</p:outputPanel>
+								</p:outputPanel>
+								<br /> <br />
+							</div>
+						</div>
+					</div>
+					<br />
+					<p:outputPanel id="cabecalhoLancheTarde">
+						<p:outputPanel
+							rendered="#{ControleInstituicao.instituicaoSelecionado.tipo}">
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="ALMOÇO" />
+								<p:separator />
+							</div>
+
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="LANCHE DA TARDE" />
+								<p:separator />
+							</div>
+
+						</p:outputPanel>
+						<p:outputPanel
+							rendered="#{ControleInstituicao.instituicaoSelecionado.tipo == false}">
+
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="Turno Tarde" />
+								<p:separator />
+							</div>
+						</p:outputPanel>
+					</p:outputPanel>
+
+					<div class="ui-grid ui-grid-responsive">
+						<div class="ui-grid-col-6">
+							<div id="form-group">
+								<p:outputPanel id="lblAlmocoBP">
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo}">
+										<h:outputLabel for="Pre2" value="BERÇÁRIO 1: " />
+									</p:outputPanel>
+
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo == false}">
+										<h:outputLabel for="Pre2" value="PRÉ-FUNDAMENTAL: " />
+									</p:outputPanel>
+
+									<p:inputMask id="Pre2" styleClass="campo_alt_num" mask="9?99"
+										value="#{ControleInstituicao.turno2_1.qtdAlunos1}" />
+
+								</p:outputPanel>
+								<p:messages for="Pre2" />
+							</div>
+							<br />
+							<div id="form-group">
+								<p:outputPanel id="lblAlmocoMF">
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo}">
+										<h:outputLabel for="Fund2" value="BERÇÁRIO 2: " />
+									</p:outputPanel>
+
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo == false}">
+										<h:outputLabel for="Fund2" value="ENSINO FUNDAMENTAL: " />
+									</p:outputPanel>
+
+
+									<p:inputMask id="Fund2" styleClass="campo_alt_num" mask="9?99"
+										value="#{ControleInstituicao.turno2_1.qtdAlunos2}" />
+
+								</p:outputPanel>
+								<p:messages for="Fund2" />
+							</div>
+							<br />
+
+							<div id="form-group">
+								<p:outputPanel id="lblAlmocoAAE">
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo == false}">
+										<h:outputLabel for="AAE2" value="AAE: " />
+									</p:outputPanel>
+
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo}">
+										<h:outputLabel for="AAE2" value="MATERNAL: " />
+									</p:outputPanel>
+
+									<p:inputMask id="AAE2" styleClass="campo_alt_num" mask="9?99"
+										value="#{ControleInstituicao.turno2_1.qtdAlunos3}" />
+
+								</p:outputPanel>
+								<p:messages for="AAE2" />
+							</div>
+
+						</div>
+						<p:outputPanel id="panelLancheTarde">
+							<p:outputPanel
+								rendered="#{ControleInstituicao.instituicaoSelecionado.tipo}">
+								<div class="ui-grid-col-6">
+									<div id="form-group">
+										<h:outputLabel for="Pre5" value="BERÇÁRIO 1: " />
+
+										<p:inputMask id="Pre5" styleClass="campo_alt_num" mask="9?99"
+											value="#{ControleInstituicao.turno2_2.qtdAlunos1}" />
+
+										<p:messages for="Pre5" />
+									</div>
+									<br />
+
+									<div id="form-group">
+										<h:outputLabel for="Fund5" value="BEÇÁRIO 2: " />
+
+										<p:inputMask id="Fund5" styleClass="campo_alt_num" mask="9?99"
+											value="#{ControleInstituicao.turno2_2.qtdAlunos2}" />
+
+										<p:messages for="Fund5" />
+									</div>
+									<br />
+
+									<div id="form-group">
+										<h:outputLabel for="AAE5" value="MATERNAL: " />
+
+										<p:inputMask id="AAE5" styleClass="campo_alt_num" mask="9?99"
+											value="#{ControleInstituicao.turno2_2.qtdAlunos3}" />
+
+										<p:messages for="AAE5" />
+									</div>
+									<br />
+								</div>
+							</p:outputPanel>
+						</p:outputPanel>
+						<br /> <br />
+					</div>
+					<br />
+
+					<p:outputPanel id="cabecalhoJantar">
+
+						<p:outputPanel
+							rendered="#{ControleInstituicao.instituicaoSelecionado.tipo}">
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="JANTAR" />
+								<p:separator />
+							</div>
+						</p:outputPanel>
+
+						<p:outputPanel
+							rendered="#{ControleInstituicao.instituicaoSelecionado.tipo == false}">
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="Turno Noite" />
+								<p:separator />
+							</div>
+						</p:outputPanel>
+					</p:outputPanel>
+
+					<div class="ui-grid ui-grid-responsive">
+						<div class="ui-grid-col-6">
+							<div id="form-group">
+								<p:outputPanel id="lblJantarBP">
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo}">
+										<h:outputLabel for="Pre3" value="BERÇÁRIO 1: " />
+									</p:outputPanel>
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo == false}">
+										<h:outputLabel for="Pre3" value="EJA: " />
+									</p:outputPanel>
+								</p:outputPanel>
+
+								<p:inputMask id="Pre3" styleClass="campo_alt_num" mask="9?99"
+									value="#{ControleInstituicao.turno3.qtdAlunos1}" />
+
+								<p:messages for="Pre3" />
+							</div>
+							<br />
+							<div id="form-group">
+								<p:outputPanel id="lblJantarMF">
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo}">
+										<h:outputLabel for="Fund3" value="BERÇÁRIO 2: " />
+									</p:outputPanel>
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo == false}">
+										<h:outputLabel for="Fund3" value="ENSINO FUNDAMENTAL: " />
+									</p:outputPanel>
+								</p:outputPanel>
+
+								<p:inputMask id="Fund3" styleClass="campo_alt_num" mask="9?99"
+									value="#{ControleInstituicao.turno3.qtdAlunos2}" />
+
+								<p:messages for="Fund3" />
+							</div>
+							<br />
+
+							<div id="form-group">
+								<p:outputPanel id="lblJantarAAE">
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo == false}">
+										<h:outputLabel for="AAE3" value="AAE: " />
+									</p:outputPanel>
+
+									<p:outputPanel
+										rendered="#{ControleInstituicao.instituicaoSelecionado.tipo}">
+										<h:outputLabel for="AAE3" value="MARTENAL: " />
+									</p:outputPanel>
+
+									<p:inputMask id="AAE3" styleClass="campo_alt_num" mask="9?99"
+										value="#{ControleInstituicao.turno3.qtdAlunos3}" />
+
+								</p:outputPanel>
+							</div>
+							<p:messages for="AAE3" />
+						</div>
+						<br /> <br />
+					</div>
+					<br />
+					<div class="ui-grid-col-3">
+
+						<div class="botoes_principais">
+							<p:commandButton
+								action="#{ControleInstituicao.alterarInstituicao()}"
+								value="Salvar" ajax="false" />
+						</div>
+					</div>
+					<br />
+				</p:fieldset>
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>

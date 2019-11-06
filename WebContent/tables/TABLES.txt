@@ -1,0 +1,279 @@
+CREATE TABLE "Usuario"
+(
+  id_usuario serial NOT NULL,
+  login name NOT NULL,
+  senha name NOT NULL,
+  nome_usuario name,
+  CONSTRAINT "Usuário_pkey" PRIMARY KEY (id_usuario)
+);
+
+******************************************************************************************************************
+CREATE TABLE "Rota"
+(
+  id_rota integer NOT NULL,
+  descricao_rota name,
+  nome name NOT NULL,
+  CONSTRAINT pk_id_rota PRIMARY KEY (id_rota)
+);
+
+******************************************************************************************************************
+CREATE TABLE "Item"
+(
+  id_item integer NOT NULL,
+  descricao_item name,
+  percapita real,
+  grama real,
+  CONSTRAINT pk_id_item PRIMARY KEY (id_item)
+);
+
+******************************************************************************************************************
+CREATE TABLE "Endereco"
+(
+  id_endereco integer NOT NULL,
+  rua name,
+  bairro name,
+  cidade name,
+  estado name,
+  cep name,
+  referencia name,
+  telefone name,
+  celular name,
+  CONSTRAINT pk_id_endereco PRIMARY KEY (id_endereco)
+);
+
+******************************************************************************************************************
+CREATE TABLE "Merenda"
+(
+  id_merenda integer NOT NULL,
+  iten1 integer,
+  iten2 integer,
+  iten3 integer,
+  iten4 integer,
+  iten5 integer,
+  descricao name,
+  merenda_fria boolean,
+  descartaveis boolean,
+  exclusao_logica boolean,
+  CONSTRAINT pk_id_merenda PRIMARY KEY (id_merenda),
+  CONSTRAINT fk_id_iten1 FOREIGN KEY (iten1)
+      REFERENCES "Item" (id_item) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_id_iten2 FOREIGN KEY (iten2)
+      REFERENCES "Item" (id_item) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_id_iten3 FOREIGN KEY (iten3)
+      REFERENCES "Item" (id_item) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_id_iten4 FOREIGN KEY (iten4)
+      REFERENCES "Item" (id_item) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_id_iten5 FOREIGN KEY (iten5)
+      REFERENCES "Item" (id_item) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+
+******************************************************************************************************************
+CREATE TABLE "Instituicao"
+(
+  id_instituicao integer NOT NULL,
+  id_endereco integer,
+  id_rota integer,
+  tipo boolean,
+  nome name,
+  pre1 integer,
+  fund1 integer,
+  pre2 integer,
+  fund2 integer,
+  pre3 integer,
+  fund3 integer,
+  pre4 integer,
+  fund4 integer,
+  pre5 integer,
+  fund5 integer,
+  CONSTRAINT pk_id_instituicao PRIMARY KEY (id_instituicao),
+  CONSTRAINT fk_id_endereco FOREIGN KEY (id_endereco)
+      REFERENCES "Endereco" (id_endereco) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_id_rota FOREIGN KEY (id_rota)
+      REFERENCES "Rota" (id_rota) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+******************************************************************************************************************
+CREATE TABLE "Mapa"
+(
+  id_mapa_escola integer NOT NULL,
+  rota name,
+  pre1 integer,
+  fund1 integer,
+  cardapio1 name,
+  item1_1 name,
+  item1_1_percapta real,
+  item1_1_grama real,
+  qtd_pre_item1_1 real,
+  qtd_fund_item1_1 real,
+  qtd_total_item1_1 real,
+  item2_1 name,
+  item2_1_percapta real,
+  item2_1_grama real,
+  qtd_pre_item2_1 real,
+  qtd_fund_item2_1 real,
+  qtd_total_item2_1 real,
+  item3_1 name,
+  item3_1_percapta real,
+  item3_1_grama real,
+  qtd_pre_item3_1 real,
+  qtd_fund_item3_1 real,
+  qtd_total_item3_1 real,
+  item4_1 name,
+  item4_1_percapta real,
+  item4_1_grama real,
+  qtd_pre_item4_1 real,
+  qtd_fund_item4_1 real,
+  qtd_total_item4_1 real,
+  item5_1 name,
+  item5_1_percapta real,
+  item5_1_grama real,
+  qtd_pre_item5_1 real,
+  qtd_fund_item5_1 real,
+  qtd_total_item5_1 real,
+  pre2 integer,
+  fund2 integer,
+  cardapio2 name,
+  item1_2 name,
+  item1_2_percapta real,
+  item1_2_grama real,
+  qtd_pre_item1_2 real,
+  qtd_fund_item1_2 real,
+  qtd_total_item1_2 real,
+  item2_2 name,
+  item2_2_percapta real,
+  item2_2_grama real,
+  qtd_pre_item2_2 real,
+  qtd_fund_item2_2 real,
+  qtd_total_item2_2 real,
+  item3_2 name,
+  item3_2_percapta real,
+  item3_2_grama real,
+  qtd_pre_item3_2 real,
+  qtd_fund_item3_2 real,
+  qtd_total_item3_2 real,
+  item4_2 name,
+  item4_2_percapta real,
+  item4_2_grama real,
+  qtd_pre_item4_2 real,
+  qtd_fund_item4_2 real,
+  qtd_total_item4_2 real,
+  item5_2 name,
+  item5_2_percapta real,
+  item5_2_grama real,
+  qtd_pre_item5_2 real,
+  qtd_fund_item5_2 real,
+  qtd_total_item5_2 real,
+  pre3 integer,
+  fund3 integer,
+  cardapio3 name,
+  item1_3 name,
+  item1_3_percapta real,
+  item1_3_grama real,
+  qtd_pre_item1_3 real,
+  qtd_fund_item1_3 real,
+  qtd_total_item1_3 real,
+  item2_3 name,
+  item2_3_percapta real,
+  item2_3_grama real,
+  qtd_pre_item2_3 real,
+  qtd_fund_item2_3 real,
+  qtd_total_item2_3 real,
+  item3_3 name,
+  item3_3_percapta real,
+  item3_3_grama real,
+  qtd_pre_item3_3 real,
+  qtd_fund_item3_3 real,
+  qtd_total_item3_3 real,
+  item4_3 name,
+  item4_3_percapta real,
+  item4_3_grama real,
+  qtd_pre_item4_3 real,
+  qtd_fund_item4_3 real,
+  qtd_total_item4_3 real,
+  item5_3 name,
+  item5_3_percapta real,
+  item5_3_grama real,
+  qtd_pre_item5_3 real,
+  qtd_fund_item5_3 real,
+  qtd_total_item5_3 real,
+  pre4 integer,
+  fund4 integer,
+  cardapio4 name,
+  item1_4 name,
+  item1_4_percapta real,
+  item1_4_grama real,
+  qtd_pre_item1_4 real,
+  qtd_fund_item1_4 real,
+  qtd_total_item1_4 real,
+  item2_4 name,
+  item2_4_percapta real,
+  item2_4_grama real,
+  qtd_pre_item2_4 real,
+  qtd_fund_item2_4 real,
+  qtd_total_item2_4 real,
+  item3_4 name,
+  item3_4_percapta real,
+  item3_4_grama real,
+  qtd_pre_item3_4 real,
+  qtd_fund_item3_4 real,
+  qtd_total_item3_4 real,
+  item4_4 name,
+  item4_4_percapta real,
+  item4_4_grama real,
+  qtd_pre_item4_4 real,
+  qtd_fund_item4_4 real,
+  qtd_total_item4_4 real,
+  item5_4 name,
+  item5_4_percapta real,
+  item5_4_grama real,
+  qtd_pre_item5_4 real,
+  qtd_fund_item5_4 real,
+  qtd_total_item5_4 real,
+  pre5 integer,
+  fund5 integer,
+  cardapio5 name,
+  item1_5 name,
+  item1_5_percapta real,
+  item1_5_grama real,
+  qtd_pre_item1_5 real,
+  qtd_fund_item1_5 real,
+  qtd_total_item1_5 real,
+  item2_5 name,
+  item2_5_percapta real,
+  item2_5_grama real,
+  qtd_pre_item2_5 real,
+  qtd_fund_item2_5 real,
+  qtd_total_item2_5 real,
+  item3_5 name,
+  item3_5_percapta real,
+  item3_5_grama real,
+  qtd_pre_item3_5 real,
+  qtd_fund_item3_5 real,
+  qtd_total_item3_5 real,
+  item4_5 name,
+  item4_5_percapta real,
+  item4_5_grama real,
+  qtd_pre_item4_5 real,
+  qtd_fund_item4_5 real,
+  qtd_total_item4_5 real,
+  item5_5 name,
+  item5_5_percapta real,
+  item5_5_grama real,
+  qtd_pre_item5_5 real,
+  qtd_fund_item5_5 real,
+  qtd_total_item5_5 real,
+  data_mapeamento date,
+  instituicao name,
+  CONSTRAINT pk_id_mapa_escola PRIMARY KEY (id_mapa_escola)
+);
+******************************************************************************************************************
+
+******************************************************************************************************************
+
+******************************************************************************************************************

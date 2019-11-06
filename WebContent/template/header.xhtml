@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+<head>
+<style type="text/css">
+.ui-icon-triangle-1-s {
+	top: 5px !important;
+	position: relative !important;
+	left: 5px !important;
+	background-image:
+		url("javax.faces.resource/images/ui-icons_ffffff_256x240.png.xhtml?ln=primefaces-bootstrap")
+		!important;
+}
+</style>
+</head>
+<body>
+	<ui:composition>
+		<h:form>
+			<p:growl id="messages" />
+
+			<p:menubar>
+				<p:menuitem styleClass="logo_dx" value="">
+					<img src="Imagens/snack-webv2-logo-negativo.png" height="40" />
+				</p:menuitem>
+				<p:menuitem value="Início" url="principal.xhtml" />
+
+				<p:submenu label="Cadastros" styleClass="menu_superior">
+					<p:menuitem value="Usuário" url="cadastroUsuario.xhtml" />
+					<p:menuitem value="Descartáveis" url="cadastroDescartavel.xhtml" />
+					<p:menuitem value="Item" url="cadastroItem.xhtml" />
+					<p:menuitem value="Merenda" url="cadastroMerenda.xhtml" />
+					<p:menuitem value="Rota" url="cadastroRota.xhtml" />
+					<p:menuitem value="Instituição" url="cadastroInstituicao.xhtml" />
+				</p:submenu>
+
+				<p:menuitem value="Mapas" url="cadastroMapa.xhtml" />
+				<p:menuitem value="Relatórios" url="#" />
+				<p:menuitem value="Ajuda" url="#" />
+
+				<f:facet name="options"> 
+				Bem-vindo #{ControleUsuario.aUserSession.login}!
+				<p:commandButton action="#{ControleUsuario.logout()}" value="Sair"
+						title="Encerrar Sessão"></p:commandButton>
+				</f:facet>
+			</p:menubar>
+
+		</h:form>
+	</ui:composition>
+</body>
+</html>

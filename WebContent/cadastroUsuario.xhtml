@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/alterados.css"></link>
+	<link rel="stylesheet" type="text/css"
+		href="lib/bootstrap3/css/bootstrap.css"></link>
+	<title>Cadastro de Usuário</title>
+</h:head>
+<h:body>
+
+	<div id="header">
+		<ui:insert name="header">
+			<ui:include src="template/header.xhtml"></ui:include>
+		</ui:insert>
+	</div>
+	<div class="titulo_pagina">CADASTRO DE USUÁRIO</div>
+	<br></br>
+	<br></br>
+	<div class="container">
+		<div class="row">
+
+			<p:tabView>
+				<p:tab title="Cadastrar">
+
+					<h:form id="formCadastroItem">
+						<p:growl autoUpdate="true" id="messageInserir" showDetail="true"
+							showSummary="true" />
+						<div class="ui-grid-col-6">
+							<div id="form-group">
+								<h:outputLabel for="usuario" value="Nome Completo:" />
+								<p:inputText id="usuario" styleClass="campo_alt"
+									value="#{ControleUsuario.usuario.nomeUsuario}" required="true"
+									requiredMessage="Por favor preencha o campo Nome Completo!"
+									validatorMessage="Nome inválido! Favor preencher o nome COMPLETO e sem números ou caracteres especiais.">
+									<f:validateRegex pattern="^[a-zA-Z Á-ú]+ [a-zA-Z Á-ú]+$" />
+								</p:inputText>
+								<div id="form-group">
+									<h:outputLabel for="login" value="Login:" />
+									<p:inputText id="login" styleClass="campo_alt"
+										value="#{ControleUsuario.usuario.login}" required="true"
+										requiredMessage="Por favor preencha o campo Login!"
+										validatorMessage="Login inválido! Favor preencher sem caracteres especiais.">
+										<f:validateRegex pattern="^[a-zA-Z Á-ú _ 0-9]+$" />
+									</p:inputText>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="ui-grid-col-6">
+
+							<div id="form-group">
+								<h:outputLabel for="senha1" value="Senha:" />
+								<p:password id="pwd1" value="#{ControleUsuario.usuario.senha}"
+									match="pwd2" label="Senha 1" required="true"
+									styleClass="campo_alt" feedback="true"
+									validatorMessage="Senhas não conferem!" />
+							</div>
+							<div id="form-group">
+								<h:outputLabel for="senha2" value="Digite a senha novamente:" />
+								<p:password id="pwd2" value="#{ControleUsuario.usuario.senha}"
+									label="Senha 2" required="true" styleClass="campo_alt"
+									feedback="true" validatorMessage="Senhas não conferem!" />
+							</div>
+
+						</div>
+
+						<div class="botoes_principais">
+							<p:commandButton action="#{ControleUsuario.inserirUsuario()}"
+								value="Cadastrar" ajax="false" />
+						</div>
+
+						<br />
+					</h:form>
+				</p:tab>
+
+				<p:tab title="Consultar">
+					<div class="container-fluid">
+						<h:form id="formConsultaUsuarios">
+							<div class="tabela_principal">
+								<p:dataTable id="datatable"
+									value="#{ControleUsuario.usuarioDAO.listarTudo()}"
+									var="usuarios" frame="box" rules="all" cellpadding="3"
+									paginator="true" rows="10" resizableColumns="true"
+									style="margin-bottom:20px"
+									paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+									rowsPerPageTemplate="3,5,10"
+									emptyMessage="Nenhum registro foi encontrado" editable="true">
+
+									<f:facet name="header">
+            			USUÁRIOS CADASTRADOS
+       				 </f:facet>
+									<p:column headerText="Nome" filterBy="#{usuarios.nomeUsuario}"
+										filterMatchMode="contains" width="20%">
+										<h:outputText value="#{usuarios.nomeUsuario}" />
+									</p:column>
+
+									<p:column headerText="Login" filterBy="#{usuarios.login}"
+										filterMatchMode="contains" width="15%">
+										<h:outputText value="#{usuarios.login}" />
+									</p:column>
+
+									<p:column headerText="Ação" colspan="1" exportable="false"
+										width="15%">
+
+										<p:commandButton update="datatable"
+											actionListener="#{ControleUsuario.selecionarUsuario(usuarios)}"
+											action="#{ControleUsuario.alterarDialog()}"
+											icon="ui-icon-pencil" title="Editar" styleClass="botao_verde"
+											process="@this">
+										</p:commandButton>
+
+										<p:commandButton update="datatable" icon="ui-icon-trash"
+											title="Excluir" styleClass="botao_vermelho"
+											action="#{ControleUsuario.deletarUsuario(usuarios)}">
+											<p:confirm header="Confirmação de Exclusão"
+												message="Você tem certeza que deseja excluir o Usuário ?"
+												icon="ui-icon-alert" id="btnExclusao" />
+										</p:commandButton>
+
+										<p:confirmDialog global="true" showEffect="fade"
+											hideEffect="fade">
+											<p:commandButton value="Sim" type="button"
+												styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+											<p:commandButton value="Não" type="button"
+												styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+										</p:confirmDialog>
+									</p:column>
+								</p:dataTable>
+							</div>
+						</h:form>
+
+					</div>
+
+				</p:tab>
+			</p:tabView>
+			<br />
+
+			<div class="col-md-12"></div>
+		</div>
+	</div>
+
+</h:body>
+</html>

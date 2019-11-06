@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/alterados.css"></link>
+	<link rel="stylesheet" type="text/css"
+		href="lib/bootstrap3/css/bootstrap.css"></link>
+
+	<title>Cadastro de Merendas</title>
+
+</h:head>
+<h:body>
+
+	<div id="header">
+		<ui:insert name="header">
+			<ui:include src="template/header.xhtml"></ui:include>
+		</ui:insert>
+	</div>
+	<div class="titulo_pagina">CADASTRO DE MERENDAS</div>
+	<br></br>
+	<br></br>
+	<div class="container">
+		<div class="row">
+			<p:tabView>
+				<p:tab title="Cadastrar">
+
+					<h:form id="formCadastroMerenda">
+						<p:growl id="messageInserir" showDetail="true" showSummary="true" />
+
+						<div class="ui-grid-col-6">
+							<div id="form-group">
+								<h:outputLabel for="descMerenda" value="Nome da Merenda: " />
+								<p:inputText id="descMerenda" styleClass="campo_alt"
+									value="#{ControleMerenda.merenda.descricaoMerenda}"
+									required="true" placeholder="Digite a descrição da merenda"
+									label="Nome Merenda"
+									validatorMessage="Descrição inválida! Favor preencher sem números ou caracteres especiais.">
+									<f:validateRegex pattern="^[a-zA-Z Á-ú]+$" />
+								</p:inputText>
+							</div>
+						</div>
+
+						<div class="ui-grid ui-grid-responsive">
+							<div class="ui-grid-col-6">
+								<h:outputLabel for="descartavelMerenda"
+									value="Selecione os descartaveis da merenda" />
+								<br />
+								<p:pickList id="pickListDescartaveis"
+									value="#{ControleMerenda.descartavelDualList}"
+									var="descartavel" itemLabel="#{descartavel.descricao}"
+									itemValue="#{descartavel}" showSourceFilter="true"
+									responsive="true" filterMatchMode="contains"
+									showCheckbox="true" converter="DescartavelConverterDualList"
+									showTargetFilter="true">
+
+									<f:facet name="sourceCaption">Lista de Descartáveis</f:facet>
+									<f:facet name="targetCaption">Descartáveis Selecionados</f:facet>
+								</p:pickList>
+								<br />
+							</div>
+							<div class="ui-grid-col-6">
+								<h:outputLabel for="itensMerenda"
+									value="Selecione os itens da merenda" />
+								<br />
+								<p:pickList id="pickListItem"
+									value="#{ControleMerenda.itemDualList}" var="item"
+									itemLabel="#{item.descricaoItem}" itemValue="#{item}"
+									showSourceFilter="true" responsive="true"
+									filterMatchMode="contains" showCheckbox="true"
+									converter="ItemConverterDualList" showTargetFilter="true"
+									required="true"
+									requiredMessage="Por favor selecione ao menos um item para merenda!">
+
+									<f:facet name="sourceCaption">Lista de Itens</f:facet>
+									<f:facet name="targetCaption">Itens Selecionados</f:facet>
+								</p:pickList>
+								<br></br>
+
+							</div>
+						</div>
+
+						<div class="botoes_principais">
+							<p:commandButton value="Cadastrar"
+								action="#{ControleMerenda.inserirMerenda()}" ajax="false">
+							</p:commandButton>
+						</div>
+					</h:form>
+				</p:tab>
+
+				<p:tab title="Consultar">
+					<div class="container-fluid">
+						<h:form id="formConsultaMerenda">
+							<p:growl autoUpdate="true" showDetail="true" showSummary="true"
+								id="messageDataTable" />
+							<div class="tabela_principal_merenda">
+								<p:dataTable id="datatable"
+									value="#{ControleMerenda.listarMerendas()}" var="merendas"
+									cellpadding="3" paginator="true" rows="10"
+									style="margin-bottom:20px"
+									paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+									rowsPerPageTemplate="3,5,10"
+									emptyMessage="Nenhum registro foi encontrado" editable="true"
+									scrollable="true">
+
+									<f:facet name="header">
+            			MERENDAS CADASTRADAS
+       				 </f:facet>
+									<p:column headerText="Descrição"
+										filterBy="#{merendas.descricaoMerenda}"
+										filterMatchMode="contains" width="35%">
+										<h:outputText value="#{merendas.descricaoMerenda}" />
+									</p:column>
+
+									<p:column headerText="Descartaveis" width="25%">
+										<p:dataList value="#{merendas.descartavels}"
+											var="descartaveis" emptyMessage="" itemType="none">
+											<h:outputText value="#{descartaveis.descricao}" />
+										</p:dataList>
+									</p:column>
+
+									<p:column headerText="Itens" width="25%">
+										<p:dataList value="#{merendas.items}" var="itens"
+											itemType="none">
+											<h:outputText value="#{itens.descricaoItem}" />
+										</p:dataList>
+									</p:column>
+
+									<p:column headerText="Ação" colspan="1" exportable="false"
+										width="15%">
+										<div align="center">
+											<p:commandButton update="@form"
+												action="#{ControleMerenda.alterarDialog()}"
+												actionListener="#{ControleMerenda.selecionarMerenda(merendas)}"
+												icon="ui-icon-pencil" title="Editar"
+												styleClass="botao_verde" process="@this" />
+
+
+											<p:commandButton
+												action="#{ControleMerenda.deletarMerenda(merendas)}"
+												icon="ui-icon-trash" title="Excluir"
+												styleClass="botao_vermelho" update="datatable">
+
+												<p:confirm header="Confirmação de exclusão"
+													message="Tem certeza que deseja excluir a merenda #{merendas.descricaoMerenda}?" />
+
+											</p:commandButton>
+										</div>
+
+										<p:confirmDialog global="true" showEffect="fade"
+											hideEffect="fade">
+											<div align="center">
+												<p:commandButton value="Sim" type="button"
+													styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+												<p:commandButton value="Não" type="button"
+													styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+											</div>
+										</p:confirmDialog>
+
+									</p:column>
+
+								</p:dataTable>
+								<p:blockUI block="datatable" trigger="datatable">
+									<h:outputLabel value="Loading..." />
+									<br />
+									<p:progressBar widgetVar="pbAjax" ajax="true" value="50"
+										styleClass="animated" global="false" />
+								</p:blockUI>
+
+							</div>
+
+						</h:form>
+
+					</div>
+
+				</p:tab>
+
+			</p:tabView>
+			<br />
+
+			<div class="col-md-12"></div>
+		</div>
+	</div>
+</h:body>
+</html>

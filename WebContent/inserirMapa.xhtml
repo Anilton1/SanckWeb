@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/alterados.css"></link>
+	<link rel="stylesheet" type="text/css"
+		href="lib/bootstrap3/css/bootstrap.css"></link>
+
+	<title>Cadastro de Mapas</title>
+
+</h:head>
+<h:body>
+
+	<div id="header">
+		<ui:insert name="header">
+			<ui:include src="template/header.xhtml"></ui:include>
+		</ui:insert>
+	</div>
+	<div class="titulo_pagina">CADASTRO DE MAPAS</div>
+	<br></br>
+	<br></br>
+	<div class="container">
+		<div class="row">
+			<p:tabView>
+				<p:tab title="Inserção Unitária de Mapa">
+					<h:form id="formUnitarioMapa">
+						<p:growl id="messageInserir" showDetail="true" showSummary="true" />
+						<p:fieldset legend="Inserção Unitária" toggleable="true"
+							toggleSpeed="450">
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<h:outputLabel for="Tipo" value="Tipo do Mapa: " />
+									<p:selectOneRadio id="Tipo" value="#{ControleMapa.mapa.tipo}"
+										columns="1" label="tpMapa" required="true"
+										requiredMessage="Escolha o tipo do Mapa!">
+										<f:selectItem itemLabel="Escola " itemValue="false" />
+										<f:selectItem itemLabel="Creche " itemValue="true" />
+										<p:ajax update="merenda4 merenda5" event="change" />
+									</p:selectOneRadio>
+									<p:messages for="Tipo" />
+								</div>
+
+								<div id="form-group">
+									<h:outputLabel for="instituicaoMapa" value="Instituição: " />
+									<h:selectOneMenu value="#{ControleMapa.instituicao}"
+										id="instituicaoMapa" styleClass="campo_alt" required="true"
+										requiredMessage="A Instituição não pode estar vazia!"
+										label="instituicaoMapa">
+										<f:selectItem itemLabel="--Selecione--"
+											noSelectionOption="true" />
+										<f:selectItems var="instituicaoMapa"
+											value="#{ControleInstituicao.listarInstituicaoComoString()}" />
+
+									</h:selectOneMenu>
+									<p:messages for="Tipo" />
+									<br></br>
+								</div>
+
+<p:fieldset legend="Quantidade de alunos por refeição"
+							toggleable="true" toggleSpeed="450">
+
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="Café da manhã" />
+								<p:separator />
+							</div>
+							<p:outputPanel id="cabecalhoLancheManha">
+								<p:outputPanel
+									rendered="#{ControleMapa.mapa.tipo}">
+									<div class="ui-grid-col-6">
+										<h:outputLabel value="lanche da manhã" />
+										<p:separator />
+									</div>
+								</p:outputPanel>
+							</p:outputPanel>
+
+							<div class="ui-grid ui-grid-responsive">
+								<div class="ui-grid-col-6">
+									<div id="form-group">
+										<p:outputPanel id="lblCafeDaManhaBP">
+											<p:outputPanel
+												rendered="#{ControleMapa.mapa.tipo}">
+												<h:outputLabel for="Pre1" value="BERÇARIO: " />
+											</p:outputPanel>
+											<p:outputPanel
+												rendered="#{ControleMapa.mapa.tipo == false}">
+												<h:outputLabel for="Pre1" value="PRÉ-FUNDAMENTAL: " />
+											</p:outputPanel>
+										</p:outputPanel>
+										<h:selectOneMenu value="#{ControleMapa.merenda1}"
+										id="merendaMapa1" styleClass="campo_alt" required="true"
+										requiredMessage="A merenda não pode estar vazia!"
+										label="merendaMapa1">
+										<f:selectItem itemLabel="--Selecione--"
+											noSelectionOption="true" />
+										<f:selectItems var="merendaMapa1"
+											value="#{ControleMerenda.listarMerendaComoString()}" />
+
+									</h:selectOneMenu>
+									<p:messages for="Tipo" />
+									<br></br>
+										<p:messages for="Pre1" />
+									</div>
+									<br />
+									<div id="form-group">
+										<p:outputPanel id="lblCafeDaManhaMF">
+											<p:outputPanel
+												rendered="#{ControleMapa.mapa.tipo}">
+												<h:outputLabel for="Fund1" value="MATERNAL: " />
+											</p:outputPanel>
+											<p:outputPanel
+												rendered="#{ControleMapa.mapa.tipo == false}">
+												<h:outputLabel for="Fund1" value="ENSINO FUNDAMENTAL: " />
+											</p:outputPanel>
+										</p:outputPanel>
+										<p:inputText id="Fund1" styleClass="campo_alt_num"
+											value="#{ControleMapa.mapa.fund1}"
+											required="true"
+											requiredMessage="A quantidade de alunos para o café da manhã tem que ser definida.">
+										</p:inputText>
+										<p:messages for="Fund1" />
+									</div>
+									<br />
+								</div>
+								<p:outputPanel id="panelLancheManha">
+									<p:outputPanel
+										rendered="#{ControleMapa.mapa.tipo}">
+										<div class="ui-grid-col-6">
+											<div id="form-group">
+												<h:outputLabel for="Pre4" value="BERÇÁRIO: " />
+												<p:inputText id="Pre4" styleClass="campo_alt_num"
+													value="#{ControleMapa.mapa.pre4}" />
+											</div>
+											<br />
+											<div id="form-group">
+												<h:outputLabel for="Fund4" value="MATERNAL: " />
+												<p:inputText id="Fund4" styleClass="campo_alt_num"
+													value="#{ControleMapa.mapa.fund4}" />
+											</div>
+											<br />
+										</div>
+									</p:outputPanel>
+								</p:outputPanel>
+								<br /> <br />
+							</div>
+							<br />
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="ALMOÇO" />
+								<p:separator />
+							</div>
+							<p:outputPanel id="cabecalhoLancheTarde">
+								<p:outputPanel
+									rendered="#{ControleMapa.mapa.tipo}">
+									<div class="ui-grid-col-6">
+										<h:outputLabel value="LANCHE DA TARDE" />
+										<p:separator />
+									</div>
+								</p:outputPanel>
+							</p:outputPanel>
+							<div class="ui-grid ui-grid-responsive">
+								<div class="ui-grid-col-6">
+									<div id="form-group">
+										<p:outputPanel id="lblAlmocoBP">
+											<p:outputPanel
+												rendered="#{ControleMapa.mapa.tipo}">
+												<h:outputLabel for="Pre2" value="BERÇÁRIO: " />
+											</p:outputPanel>
+											<p:outputPanel
+												rendered="#{ControleMapa.mapa.tipo == false}">
+												<h:outputLabel for="Pre2" value="PRÉ-FUNDAMENTAL: " />
+											</p:outputPanel>
+										</p:outputPanel>
+										<p:inputText id="Pre2" styleClass="campo_alt_num"
+											value="#{ControleMapa.mapa.pre2}"
+											required="true"
+											requiredMessage="A quantidade de alunos para o alomoço tem que ser definida.">
+										</p:inputText>
+										<p:messages for="Pre2" />
+									</div>
+									<br />
+									<div id="form-group">
+										<p:outputPanel id="lblAlmocoMF">
+											<p:outputPanel
+												rendered="#{ControleMapa.mapa.tipo}">
+												<h:outputLabel for="Fund2" value="MATERNAL: " />
+											</p:outputPanel>
+											<p:outputPanel
+												rendered="#{ControleMapa.mapa.tipo == false}">
+												<h:outputLabel for="Fund2" value="ENSINO FUNDAMENTAL: " />
+											</p:outputPanel>
+										</p:outputPanel>
+										<p:inputText id="Fund2" styleClass="campo_alt_num"
+											value="#{ControleMapa.mapa.fund2}"
+											required="true"
+											requiredMessage="A quantidade de alunos para o almoço tem que ser definida.">
+										</p:inputText>
+										<p:messages for="Fund2" />
+									</div>
+									<br />
+								</div>
+								<p:outputPanel id="panelLancheTarde">
+									<p:outputPanel
+										rendered="#{ControleMapa.mapa.tipo}">
+										<div class="ui-grid-col-6">
+											<div id="form-group">
+												<h:outputLabel for="Pre5" value="BERÇÁRIO: " />
+												<p:inputText id="Pre5" styleClass="campo_alt_num"
+													value="#{ControleMapa.mapa.pre5}" />
+											</div>
+											<br />
+
+											<div id="form-group">
+												<h:outputLabel for="Fund5" value="MATERNAL: " />
+												<p:inputText id="Fund5" styleClass="campo_alt_num"
+													value="#{ControleMapa.mapa.fund5}" />
+											</div>
+											<br />
+										</div>
+									</p:outputPanel>
+								</p:outputPanel>
+								<br /> <br />
+							</div>
+							<br />
+
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="JANTAR" />
+								<p:separator />
+							</div>
+							<div class="ui-grid ui-grid-responsive">
+								<div class="ui-grid-col-6">
+									<div id="form-group">
+										<p:outputPanel id="lblJantarBP">
+											<p:outputPanel
+												rendered="#{ControleMapa.mapa.tipo}">
+												<h:outputLabel for="Pre3" value="BERÇÁRIO: " />
+											</p:outputPanel>
+											<p:outputPanel
+												rendered="#{ControleMapa.mapa.tipo == false}">
+												<h:outputLabel for="Pre3" value="PRÉ-FUNDAMENTAL: " />
+											</p:outputPanel>
+										</p:outputPanel>
+										<p:inputText id="Pre3" styleClass="campo_alt_num"
+											value="#{ControleMapa.mapa.pre3}"
+											required="true"
+											requiredMessage="A quantidade de alunos para o jantar tem que ser definida.">
+										</p:inputText>
+										<p:messages for="Pre3" />
+									</div>
+									<br />
+									<div id="form-group">
+										<p:outputPanel id="lblJantarMF">
+											<p:outputPanel
+												rendered="#{ControleMapa.mapa.tipo}">
+												<h:outputLabel for="Fund3" value="MATERNAL: " />
+											</p:outputPanel>
+											<p:outputPanel
+												rendered="#{ControleMapa.mapa.tipo == false}">
+												<h:outputLabel for="Fund3" value="ENSINO FUNDAMENTAL: " />
+											</p:outputPanel>
+										</p:outputPanel>
+										<p:inputText id="Fund3" styleClass="campo_alt_num"
+											value="#{ControleMapa.mapa.fund3}"
+											required="true"
+											requiredMessage="A quantidade de alunos para o jantar tem que ser definida.">
+										</p:inputText>
+										<p:messages for="Fund3" />
+									</div>
+									<br />
+								</div>
+								<br /> <br />
+							</div>
+							<br />
+
+							<div class="ui-grid-col-3">
+
+								<div class="botoes_principais">
+									<p:commandButton
+										action="#{ControleMapa.inserirMapa()}"
+										value="Cadastrar" ajax="false" />
+									<p:commandButton value="Cancelar" action="#" />
+								</div>
+							</div>
+							<br />
+						</p:fieldset>
+
+
+
+								<div id="form-group">
+									<h:outputLabel for="merendaMapa1" value="Merenda1: " />
+									<h:selectOneMenu value="#{ControleMapa.merenda1}"
+										id="merendaMapa1" styleClass="campo_alt" required="true"
+										requiredMessage="A merenda não pode estar vazia!"
+										label="merendaMapa1">
+										<f:selectItem itemLabel="--Selecione--"
+											noSelectionOption="true" />
+										<f:selectItems var="merendaMapa1"
+											value="#{ControleMerenda.listarMerendaComoString()}" />
+
+									</h:selectOneMenu>
+									<p:messages for="Tipo" />
+									<br></br>
+								</div>
+
+								<div id="form-group">
+									<h:outputLabel for="merendaMapa2" value="Merenda2: " />
+									<h:selectOneMenu value="#{ControleMapa.merenda2}"
+										id="merendaMapa2" styleClass="campo_alt" required="true"
+										requiredMessage="A merenda não pode estar vazia!"
+										label="merendaMapa2">
+										<f:selectItem itemLabel="--Selecione--"
+											noSelectionOption="true" />
+										<f:selectItems var="merendaMapa2"
+											value="#{ControleMerenda.listarMerendaComoString()}" />
+
+									</h:selectOneMenu>
+									<p:messages for="Tipo" />
+									<br></br>
+								</div>
+
+								<div id="form-group">
+									<h:outputLabel for="merendaMapa3" value="Merenda3: " />
+									<h:selectOneMenu value="#{ControleMapa.merenda3}"
+										id="merendaMapa3" styleClass="campo_alt" required="true"
+										requiredMessage="A merenda não pode estar vazia!"
+										label="merendaMapa3">
+										<f:selectItem itemLabel="--Selecione--"
+											noSelectionOption="true" />
+										<f:selectItems var="merendaMapa3"
+											value="#{ControleMerenda.listarMerendaComoString()}" />
+
+									</h:selectOneMenu>
+									<p:messages for="Tipo" />
+									<br></br>
+								</div>
+
+								<div id="form-group">
+									<p:outputPanel id="merenda4">
+										<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+											<h:outputLabel for="merendaMapa4" value="Merenda4: " />
+											<h:selectOneMenu value="#{ControleMapa.merenda4}"
+												id="merendaMapa4" styleClass="campo_alt" required="true"
+												requiredMessage="A merenda não pode estar vazia!"
+												label="merendaMapa4">
+												<f:selectItem itemLabel="--Selecione--"
+													noSelectionOption="true" />
+												<f:selectItems var="merendaMapa4"
+													value="#{ControleMerenda.listarMerendaComoString()}" />
+
+											</h:selectOneMenu>
+											<p:messages for="Tipo" />
+											<br></br>
+										</p:outputPanel>
+									</p:outputPanel>
+								</div>
+
+								<div id="form-group">
+									<p:outputPanel id="merenda5">
+										<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+											<h:outputLabel for="merendaMapa5" value="Merenda5: " />
+											<h:selectOneMenu value="#{ControleMapa.merenda5}"
+												id="merendaMapa5" styleClass="campo_alt" required="true"
+												requiredMessage="A merenda não pode estar vazia!"
+												label="merendaMapa5">
+												<f:selectItem itemLabel="--Selecione--"
+													noSelectionOption="true" />
+												<f:selectItems var="merendaMapa5"
+													value="#{ControleMerenda.listarMerendaComoString()}" />
+
+											</h:selectOneMenu>
+											<p:messages for="Tipo" />
+											<br></br>
+										</p:outputPanel>
+									</p:outputPanel>
+								</div>
+
+							</div>
+
+							<div class="ui-grid-col-3">
+
+								<div class="botoes_principais">
+									<p:commandButton action="#{ControleMapa.inserirMapaUnitario()}"
+										value="Cadastrar" ajax="false" />
+									<p:commandButton value="Cancelar" action="#" />
+								</div>
+							</div>
+							<br />
+						</p:fieldset>
+					</h:form>
+				</p:tab>
+
+				<p:tab title="Inserção de Mapas por Rota">
+					<h:form id="formMapasRotas">
+						<p:growl id="messageInserir" showDetail="true" showSummary="true" />
+						<p:fieldset legend="Inserção de Mapas por Rotas" toggleable="true"
+							toggleSpeed="450">
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<h:outputLabel for="Tipo" value="Tipo do Mapa: " />
+									<p:selectOneRadio id="Tipo" value="#{ControleMapa.mapa.tipo}"
+										columns="1" label="tpMapa" required="true"
+										requiredMessage="Escolha o tipo do Mapa!">
+										<f:selectItem itemLabel="Escola " itemValue="false" />
+										<f:selectItem itemLabel="Creche " itemValue="true" />
+										<p:ajax update="merenda4 merenda5" event="change" />
+									</p:selectOneRadio>
+									<p:messages for="Tipo" />
+								</div>
+
+								<div id="form-group">
+									<h:outputLabel for="rotaMapa" value="Rota: " />
+									<h:selectOneMenu value="#{ControleMapa.rota}" id="rotaMapa"
+										styleClass="campo_alt" required="true"
+										requiredMessage="A rota não pode estar vazia!"
+										label="rotaMapa">
+										<f:selectItem itemLabel="--Selecione--"
+											noSelectionOption="true" />
+										<f:selectItems var="rotaMapa"
+											value="#{ControleRota.listarRotaComoString()}" />
+
+									</h:selectOneMenu>
+									<p:messages for="Tipo" />
+									<br></br>
+								</div>
+
+								<div id="form-group">
+									<h:outputLabel for="merendaMapa1" value="Merenda1: " />
+									<h:selectOneMenu value="#{ControleMapa.merenda1}"
+										id="merendaMapa1" styleClass="campo_alt" required="true"
+										requiredMessage="A merenda não pode estar vazia!"
+										label="merendaMapa1">
+										<f:selectItem itemLabel="--Selecione--"
+											noSelectionOption="true" />
+										<f:selectItems var="merendaMapa1"
+											value="#{ControleMerenda.listarMerendaComoString()}" />
+
+									</h:selectOneMenu>
+									<p:messages for="Tipo" />
+									<br></br>
+								</div>
+
+								<div id="form-group">
+									<h:outputLabel for="merendaMapa2" value="Merenda2: " />
+									<h:selectOneMenu value="#{ControleMapa.merenda2}"
+										id="merendaMapa2" styleClass="campo_alt" required="true"
+										requiredMessage="A merenda não pode estar vazia!"
+										label="merendaMapa2">
+										<f:selectItem itemLabel="--Selecione--"
+											noSelectionOption="true" />
+										<f:selectItems var="merendaMapa2"
+											value="#{ControleMerenda.listarMerendaComoString()}" />
+
+									</h:selectOneMenu>
+									<p:messages for="Tipo" />
+									<br></br>
+								</div>
+
+								<div id="form-group">
+									<h:outputLabel for="merendaMapa3" value="Merenda3: " />
+									<h:selectOneMenu value="#{ControleMapa.merenda3}"
+										id="merendaMapa3" styleClass="campo_alt" required="true"
+										requiredMessage="A merenda não pode estar vazia!"
+										label="merendaMapa3">
+										<f:selectItem itemLabel="--Selecione--"
+											noSelectionOption="true" />
+										<f:selectItems var="merendaMapa3"
+											value="#{ControleMerenda.listarMerendaComoString()}" />
+
+									</h:selectOneMenu>
+									<p:messages for="Tipo" />
+									<br></br>
+								</div>
+
+								<div id="form-group">
+									<p:outputPanel id="merenda4">
+										<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+											<h:outputLabel for="merendaMapa4" value="Merenda4: " />
+											<h:selectOneMenu value="#{ControleMapa.merenda4}"
+												id="merendaMapa4" styleClass="campo_alt" required="true"
+												requiredMessage="A merenda não pode estar vazia!"
+												label="merendaMapa4">
+												<f:selectItem itemLabel="--Selecione--"
+													noSelectionOption="true" />
+												<f:selectItems var="merendaMapa4"
+													value="#{ControleMerenda.listarMerendaComoString()}" />
+
+											</h:selectOneMenu>
+											<p:messages for="Tipo" />
+											<br></br>
+										</p:outputPanel>
+									</p:outputPanel>
+								</div>
+
+								<div id="form-group">
+									<p:outputPanel id="merenda5">
+										<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+											<h:outputLabel for="merendaMapa5" value="Merenda5: " />
+											<h:selectOneMenu value="#{ControleMapa.merenda5}"
+												id="merendaMapa5" styleClass="campo_alt" required="true"
+												requiredMessage="A merenda não pode estar vazia!"
+												label="merendaMapa5">
+												<f:selectItem itemLabel="--Selecione--"
+													noSelectionOption="true" />
+												<f:selectItems var="merendaMapa5"
+													value="#{ControleMerenda.listarMerendaComoString()}" />
+
+											</h:selectOneMenu>
+											<p:messages for="Tipo" />
+											<br></br>
+										</p:outputPanel>
+									</p:outputPanel>
+								</div>
+
+							</div>
+
+							<div class="ui-grid-col-3">
+
+								<div class="botoes_principais">
+									<p:commandButton action="#{ControleMapa.inserirMapas()}"
+										value="Cadastrar" ajax="false" />
+									<p:commandButton value="Cancelar" action="#" />
+								</div>
+							</div>
+							<br />
+						</p:fieldset>
+					</h:form>
+				</p:tab>
+
+				<p:tab title="Inserção de Mapas">
+					<h:form id="formMapas">
+						<p:growl id="messageInserir" showDetail="true" showSummary="true" />
+						<p:fieldset legend="Inserção de Mapas" toggleable="true"
+							toggleSpeed="450">
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<h:outputLabel for="Tipo" value="Tipo do Mapa: " />
+									<p:selectOneRadio id="Tipo" value="#{ControleMapa.mapa.tipo}"
+										columns="1" label="tpMapa" required="true"
+										requiredMessage="Escolha o tipo do Mapa!">
+										<f:selectItem itemLabel="Escola " itemValue="false" />
+										<f:selectItem itemLabel="Creche " itemValue="true" />
+										<p:ajax update="merenda4 merenda5" event="change" />
+									</p:selectOneRadio>
+									<p:messages for="Tipo" />
+								</div>
+
+								<div id="form-group">
+									<h:outputLabel for="merendaMapa1" value="Merenda1: " />
+									<h:selectOneMenu value="#{ControleMapa.merenda1}"
+										id="merendaMapa1" styleClass="campo_alt" required="true"
+										requiredMessage="A merenda não pode estar vazia!"
+										label="merendaMapa1">
+										<f:selectItem itemLabel="--Selecione--"
+											noSelectionOption="true" />
+										<f:selectItems var="merendaMapa1"
+											value="#{ControleMerenda.listarMerendaComoString()}" />
+
+									</h:selectOneMenu>
+									<p:messages for="Tipo" />
+									<br></br>
+								</div>
+
+								<div id="form-group">
+									<h:outputLabel for="merendaMapa2" value="Merenda2: " />
+									<h:selectOneMenu value="#{ControleMapa.merenda2}"
+										id="merendaMapa2" styleClass="campo_alt" required="true"
+										requiredMessage="A merenda não pode estar vazia!"
+										label="merendaMapa2">
+										<f:selectItem itemLabel="--Selecione--"
+											noSelectionOption="true" />
+										<f:selectItems var="merendaMapa2"
+											value="#{ControleMerenda.listarMerendaComoString()}" />
+
+									</h:selectOneMenu>
+									<p:messages for="Tipo" />
+									<br></br>
+								</div>
+
+								<div id="form-group">
+									<h:outputLabel for="merendaMapa3" value="Merenda3: " />
+									<h:selectOneMenu value="#{ControleMapa.merenda3}"
+										id="merendaMapa3" styleClass="campo_alt" required="true"
+										requiredMessage="A merenda não pode estar vazia!"
+										label="merendaMapa3">
+										<f:selectItem itemLabel="--Selecione--"
+											noSelectionOption="true" />
+										<f:selectItems var="merendaMapa3"
+											value="#{ControleMerenda.listarMerendaComoString()}" />
+
+									</h:selectOneMenu>
+									<p:messages for="Tipo" />
+									<br></br>
+								</div>
+
+								<div id="form-group">
+									<p:outputPanel id="merenda4">
+										<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+											<h:outputLabel for="merendaMapa4" value="Merenda4: " />
+											<h:selectOneMenu value="#{ControleMapa.merenda4}"
+												id="merendaMapa4" styleClass="campo_alt" required="true"
+												requiredMessage="A merenda não pode estar vazia!"
+												label="merendaMapa4">
+												<f:selectItem itemLabel="--Selecione--"
+													noSelectionOption="true" />
+												<f:selectItems var="merendaMapa4"
+													value="#{ControleMerenda.listarMerendaComoString()}" />
+
+											</h:selectOneMenu>
+											<p:messages for="Tipo" />
+											<br></br>
+										</p:outputPanel>
+									</p:outputPanel>
+								</div>
+
+								<div id="form-group">
+									<p:outputPanel id="merenda5">
+										<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+											<h:outputLabel for="merendaMapa5" value="Merenda5: " />
+											<h:selectOneMenu value="#{ControleMapa.merenda5}"
+												id="merendaMapa5" styleClass="campo_alt" required="true"
+												requiredMessage="A merenda não pode estar vazia!"
+												label="merendaMapa5">
+												<f:selectItem itemLabel="--Selecione--"
+													noSelectionOption="true" />
+												<f:selectItems var="merendaMapa5"
+													value="#{ControleMerenda.listarMerendaComoString()}" />
+
+											</h:selectOneMenu>
+											<p:messages for="Tipo" />
+											<br></br>
+										</p:outputPanel>
+									</p:outputPanel>
+								</div>
+
+							</div>
+
+							<div class="ui-grid-col-3">
+
+								<div class="botoes_principais">
+									<p:commandButton action="#{ControleMapa.inserirMapas()}"
+										value="Cadastrar" ajax="false" />
+									<p:commandButton value="Cancelar" action="#" />
+								</div>
+							</div>
+							<br />
+						</p:fieldset>
+					</h:form>
+				</p:tab>
+
+
+				<p:tab title="Mapas das Escolas">
+
+				</p:tab>
+
+				<p:tab title="Mapas das Creches">
+
+				</p:tab>
+
+			</p:tabView>
+		</div>
+	</div>
+</h:body>
+</html>

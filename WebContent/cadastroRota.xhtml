@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/alterados.css"></link>
+	<link rel="stylesheet" type="text/css"
+		href="lib/bootstrap3/css/bootstrap.css"></link>
+
+	<title>Cadastro de Rota</title>
+
+</h:head>
+<h:body>
+
+	<div id="header">
+		<ui:insert name="header">
+			<ui:include src="template/header.xhtml"></ui:include>
+		</ui:insert>
+	</div>
+	<div class="titulo_pagina">CADASTRO DE ROTA</div>
+	<br></br>
+	<br></br>
+	<div class="container">
+		<div class="row">
+			<p:tabView>
+				<p:tab title="Cadastrar">
+
+					<h:form id="formCadastroRota">
+						<p:growl autoUpdate="true" id="messageInserir" showDetail="true"
+							showSummary="true" />
+						<div class="ui-grid ui-grid-responsive">
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<h:outputLabel for="nome" value="Nome da Rota:" />
+									<p:inputText id="nome" styleClass="campo_alt"
+										value="#{ControleRota.rota.nome}" required="true"
+										requiredMessage="Campo vazio! Por favor preencha o nome da rota!"
+										validatorMessage="Nome da Rota inválido! Favor preencher sem caracteres especiais.">
+										<f:validateRegex pattern="^[a-zA-Z Á-ú 0-9]+$" />
+									</p:inputText>
+								</div>
+
+								<div id="form-group">
+									<h:outputLabel for="Descricao" value="Descrição da Rota:" />
+									<p:inputTextarea id="Descricao" rows="6" cols="58"
+										autoResize="true" value="#{ControleRota.rota.descricaoRota}" />
+								</div>
+							</div>
+						</div>
+						<div class="botoes_principais">
+							<p:commandButton action="#{ControleRota.inserirRota()}"
+								value="Cadastrar" ajax="false" />
+						</div>
+
+						<br />
+					</h:form>
+				</p:tab>
+
+				<p:tab title="Consultar">
+					<div class="container-fluid">
+						<h:form id="formConsulta">
+							<p:growl autoUpdate="true" showDetail="true" showSummary="true"
+								id="messageDataTable" />
+							<div class="tabela_principal">
+								<p:dataTable id="datatable"
+									value="#{ControleRota.listarRotas()}" var="rotas"
+									paginator="true" rows="10" style="margin-bottom:20px"
+									paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+									rowsPerPageTemplate="10, 30, 50"
+									emptyMessage="Nenhum registro foi encontrado">
+
+									<f:facet name="header">
+            			ROTAS CADASTRADAS
+       				 </f:facet>
+									<p:column headerText="Nome da Rota" filterBy="#{rotas.nome}"
+										filterMatchMode="contains" width="20%">
+										<h:outputText value="#{rotas.nome}" />
+									</p:column>
+									<p:column headerText="Descrição da Rota"
+										filterBy="#{rotas.descricaoRota}" filterMatchMode="contains"
+										width="60%">
+										<h:outputText value="#{rotas.descricaoRota}" />
+									</p:column>
+									<p:column headerText="Ação" colspan="1" exportable="false"
+										width="15%">
+										<div align="center">
+											<p:commandButton update="datatable"
+												action="#{ControleRota.alterarDialog()}"
+												actionListener="#{ControleRota.selecionarRota(rotas)}"
+												icon="ui-icon-pencil" title="Editar"
+												styleClass="botao_verde" process="@this" />
+
+											<p:commandButton action="#{ControleRota.deletarRota(rotas)}"
+												icon="ui-icon-trash" title="Excluir"
+												styleClass="botao_vermelho" update="datatable">
+
+												<p:confirm header="Confirmação de exclusão"
+													message="Tem certeza que deseja excluir a rota #{rotas.descricaoRota}?" />
+
+											</p:commandButton>
+										</div>
+
+										<p:confirmDialog global="true" showEffect="fade"
+											hideEffect="fade">
+											<div align="center">
+												<p:commandButton value="Sim" type="button"
+													styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+												<p:commandButton value="Não" type="button"
+													styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+											</div>
+										</p:confirmDialog>
+
+									</p:column>
+
+								</p:dataTable>
+								<p:blockUI block="datatable" trigger="datatable">
+									<h:outputLabel value="Loading..." />
+									<br />
+									<p:progressBar widgetVar="pbAjax" ajax="true" value="50"
+										styleClass="animated" global="false" />
+								</p:blockUI>
+							</div>
+						</h:form>
+
+					</div>
+
+				</p:tab>
+			</p:tabView>
+		</div>
+	</div>
+</h:body>
+</html>

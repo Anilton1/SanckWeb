@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/alterados.css"></link>
+	<link rel="stylesheet" type="text/css"
+		href="lib/bootstrap3/css/bootstrap.css"></link>
+
+</h:head>
+<h:body>
+	<div class="container">
+		<div class="row">
+			<h:form id="formAlterarDescartavel">
+				<p:messages autoUpdate="true" for="menssageAlterar"
+					showDetail="true" showSummary="true" />
+				<div class="ui-grid-col-6">
+					<div id="form-group">
+						<h:outputLabel for="nome" value="Nome do Descartável:" />
+						<p:inputText id="nome" styleClass="campo_alt"
+							value="#{ControleDescartavel.aDescartavelSelecionado.descricao}"
+							required="true"
+							validatorMessage="Descrição inválida! Favor preencher sem números ou caracteres especiais."
+							requiredMessage="Campo vazio! Por favor preencha o nome do descartável!">
+							<f:validateRegex pattern="^[a-zA-Z Á-ú]+$" />
+						</p:inputText>
+						<p:message for="nome" />
+					</div>
+				</div>
+
+				<div class="ui-grid-col-6"></div>
+
+				<div class="botoes_principais">
+					<p:commandButton
+						action="#{ControleDescartavel.alterarDescartavel()}"
+						value="Salvar" ajax="false" />
+				</div>
+
+				<br />
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>

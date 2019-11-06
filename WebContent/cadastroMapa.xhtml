@@ -1,0 +1,1025 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/alterados.css"></link>
+	<link rel="stylesheet" type="text/css"
+		href="lib/bootstrap3/css/bootstrap.css"></link>
+	<title>Cadastro de Mapa</title>
+	<script>
+	PrimeFaces.locales['pt'] = {
+		    closeText: 'Fechar',
+		    prevText: 'Anterior',
+		    nextText: 'Próximo',
+		    currentText: 'Começo',
+		    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+		    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun', 'Jul','Ago','Set','Out','Nov','Dez'],
+		    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+		    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
+		    dayNamesMin: ['D','S','T','Q','Q','S','S'],
+		    weekHeader: 'Semana',
+		    firstDay: 0,
+		    isRTL: false,
+		    showMonthAfterYear: false,
+		    yearSuffix: '',
+		    timeOnlyTitle: 'Só Horas',
+		    timeText: 'Tempo',
+		    hourText: 'Hora',
+		    minuteText: 'Minuto',
+		    secondText: 'Segundo',
+		    ampm: false,
+		    month: 'Mês',
+		    week: 'Semana',
+		    day: 'Dia',
+		    allDayText : 'Todo o Dia'
+		};
+	</script>
+</h:head>
+<h:body>
+
+	<div id="header">
+		<ui:insert name="header">
+			<ui:include src="template/header.xhtml"></ui:include>
+		</ui:insert>
+	</div>
+	<div class="titulo_pagina">CONTROLE DE MAPAS</div>
+	<br></br>
+	<br></br>
+	<div class="container">
+		<div class="row">
+
+			<p:tabView>
+				<p:tab title="Mapear todas as instituições">
+					<br />
+					<h:form id="formCadastroGeralMapa">
+						<div class="ui-grid ui-grid-responsive">
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<h:outputLabel for="Tipo" value="Mapa para: " />
+									<p:selectOneRadio id="Tipo" value="#{ControleMapa.mapa.tipo}"
+										columns="1" label="tpMapa" required="true"
+										requiredMessage="Escolha para quem vai o mapa!">
+										<f:selectItem itemLabel="Escola" itemValue="false" />
+										<f:selectItem itemLabel="Creche" itemValue="true" />
+										<p:ajax
+											update="cabecalhoLancheManha lblCafeDaManha panelLancheManha cabecalhoLancheTarde lblAlmoco panelLancheTarde cabecalhoJantar lblJantar"
+											event="change" />
+									</p:selectOneRadio>
+								</div>
+							</div>
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<p:outputLabel value="Data da Roteirização:"
+										for="dataRoteirizacao" />
+									<p:calendar id="dataRoteirizacao"
+										value="#{ControleMapa.mapa.dataroteirizacao}" locale="pt"
+										pattern="dd/MM/yyyy" />
+								</div>
+							</div>
+						</div>
+
+						<br />
+						<br />
+
+						<p:outputPanel id="cabecalhoLancheManha">
+
+							<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+
+								<div class="ui-grid-col-6">
+									<h:outputLabel value="Desjejum" />
+									<p:separator />
+								</div>
+
+								<div class="ui-grid-col-6">
+									<h:outputLabel value="Lanche da manhã" />
+									<p:separator />
+								</div>
+							</p:outputPanel>
+
+							<p:outputPanel rendered="#{ControleMapa.mapa.tipo == false}">
+
+								<div class="ui-grid-col-6">
+									<h:outputLabel value="Café da manhã" />
+									<p:separator />
+								</div>
+							</p:outputPanel>
+						</p:outputPanel>
+
+						<div class="ui-grid ui-grid-responsive">
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<p:outputPanel id="lblCafeDaManha">
+
+										<h:selectOneMenu value="#{ControleMapa.cafeDaManha}"
+											id="cafeDaManha" styleClass="campo_alt" required="true"
+											label="Café da Manhã" converter="MerendaConverter">
+											<f:selectItem itemLabel="--Selecione--"
+												noSelectionOption="true" />
+											<f:selectItems var="cafeDaManha"
+												value="#{ControleMerenda.listarMerendas()}"
+												itemLabel="#{cafeDaManha.descricaoMerenda}"
+												itemValue="#{cafeDaManha}" />
+										</h:selectOneMenu>
+
+									</p:outputPanel>
+								</div>
+							</div>
+
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<p:outputPanel id="panelLancheManha">
+										<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+											<h:selectOneMenu value="#{ControleMapa.lancheManha}"
+												id="lancheDaManha" styleClass="campo_alt"
+												label="Lanche da Manhã" converter="MerendaConverter">
+												<f:selectItem itemLabel="--Selecione--"
+													noSelectionOption="true" />
+												<f:selectItems var="lancheDaManha"
+													value="#{ControleMerenda.listarMerendas()}"
+													itemLabel="#{lancheDaManha.descricaoMerenda}"
+													itemValue="#{lancheDaManha}" />
+											</h:selectOneMenu>
+										</p:outputPanel>
+									</p:outputPanel>
+								</div>
+							</div>
+						</div>
+
+						<br />
+						<br />
+
+						<p:outputPanel id="cabecalhoLancheTarde">
+							<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+								<div class="ui-grid-col-6">
+									<h:outputLabel value="ALMOÇO" />
+									<p:separator />
+								</div>
+
+								<div class="ui-grid-col-6">
+									<h:outputLabel value="LANCHE DA TARDE" />
+									<p:separator />
+								</div>
+
+							</p:outputPanel>
+							<p:outputPanel rendered="#{ControleMapa.mapa.tipo == false}">
+
+								<div class="ui-grid-col-6">
+									<h:outputLabel value="Almoço" />
+									<p:separator />
+								</div>
+							</p:outputPanel>
+						</p:outputPanel>
+
+						<div class="ui-grid ui-grid-responsive">
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<p:outputPanel id="lblAlmoco">
+										<h:selectOneMenu value="#{ControleMapa.almoco}" id="almoco"
+											styleClass="campo_alt" required="true" label="Almoço"
+											converter="MerendaConverter">
+											<f:selectItem itemLabel="--Selecione--"
+												noSelectionOption="true" />
+											<f:selectItems var="almoco"
+												value="#{ControleMerenda.listarMerendas()}"
+												itemLabel="#{almoco.descricaoMerenda}" itemValue="#{almoco}" />
+										</h:selectOneMenu>
+									</p:outputPanel>
+								</div>
+
+							</div>
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<p:outputPanel id="panelLancheTarde">
+										<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+											<h:selectOneMenu value="#{ControleMapa.lancheTarde}"
+												id="lancheDaTarde" styleClass="campo_alt"
+												label="Lanche da Tarde" converter="MerendaConverter">
+												<f:selectItem itemLabel="--Selecione--"
+													noSelectionOption="true" />
+												<f:selectItems var="lancheDaTarde"
+													value="#{ControleMerenda.listarMerendas()}"
+													itemLabel="#{lancheDaTarde.descricaoMerenda}"
+													itemValue="#{lancheDaTarde}" />
+											</h:selectOneMenu>
+										</p:outputPanel>
+									</p:outputPanel>
+								</div>
+							</div>
+						</div>
+
+						<br />
+						<br />
+
+						<p:outputPanel id="cabecalhoJantar">
+
+							<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+								<div class="ui-grid-col-6">
+									<h:outputLabel value="JANTAR" />
+									<p:separator />
+								</div>
+							</p:outputPanel>
+
+							<p:outputPanel rendered="#{ControleMapa.mapa.tipo == false}">
+								<div class="ui-grid-col-6">
+									<h:outputLabel value="Jantar" />
+									<p:separator />
+								</div>
+							</p:outputPanel>
+						</p:outputPanel>
+
+						<div class="ui-grid ui-grid-responsive">
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<p:outputPanel id="lblJantar">
+										<h:selectOneMenu value="#{ControleMapa.jantar}" id="jantar"
+											styleClass="campo_alt" required="true" label="Jantar"
+											converter="MerendaConverter">
+											<f:selectItem itemLabel="--Selecione--"
+												noSelectionOption="true" />
+											<f:selectItems var="jantar"
+												value="#{ControleMerenda.listarMerendas()}"
+												itemLabel="#{jantar.descricaoMerenda}" itemValue="#{jantar}" />
+										</h:selectOneMenu>
+									</p:outputPanel>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="botoes_principais">
+							<p:commandButton action="#{ControleMapa.inserirMapaGeral()}"
+								value="Mapear" ajax="false" />
+						</div>
+
+						<br />
+					</h:form>
+				</p:tab>
+
+				<p:tab title="Mapear por Rota">
+					<br />
+					<h:form id="formCadastroPorRota">
+						<div class="ui-grid ui-grid-responsive">
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<h:outputLabel for="rotaInstituicao" value="Rota:" />
+									<h:selectOneMenu value="#{ControleMapa.mapa.rota}"
+										id="rotaInstituicao" styleClass="campo_alt" required="true"
+										requiredMessage="A rota não pode estar vazia!"
+										label="rotaInstituicao" converter="RotaConverter">
+										<f:selectItem itemLabel="--Selecione--"
+											noSelectionOption="true" />
+										<f:selectItems var="rotaInstituicao"
+											value="#{ControleRota.listarRotas()}"
+											itemLabel="#{rotaInstituicao.nome} - #{rotaInstituicao.descricaoRota}"
+											itemValue="#{rotaInstituicao}" />
+									</h:selectOneMenu>
+									<p:messages for="rotaInstituicao" />
+								</div>
+							</div>
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<p:outputLabel value="Data da Roteirização:"
+										for="dataRoteirizacao" />
+									<p:calendar id="dataRoteirizacao"
+										value="#{ControleMapa.mapa.dataroteirizacao}" locale="pt"
+										pattern="dd/MM/yyyy" />
+								</div>
+							</div>
+						</div>
+
+						<br />
+						<br />
+
+						<p:outputPanel id="cabecalhoLancheManha">
+
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="Café da manhã" />
+								<p:separator />
+							</div>
+
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="Lanche da manhã" />
+								<p:separator />
+							</div>
+						</p:outputPanel>
+
+						<div class="ui-grid ui-grid-responsive">
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<p:outputPanel id="lblCafeDaManha">
+
+										<h:selectOneMenu value="#{ControleMapa.cafeDaManha}"
+											id="cafeDaManha" styleClass="campo_alt" required="true"
+											label="Café da Manhã" converter="MerendaConverter">
+											<f:selectItem itemLabel="--Selecione--"
+												noSelectionOption="true" />
+											<f:selectItems var="cafeDaManha"
+												value="#{ControleMerenda.listarMerendas()}"
+												itemLabel="#{cafeDaManha.descricaoMerenda}"
+												itemValue="#{cafeDaManha}" />
+										</h:selectOneMenu>
+
+									</p:outputPanel>
+								</div>
+							</div>
+
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<p:outputPanel id="panelLancheManha">
+										<h:selectOneMenu value="#{ControleMapa.lancheManha}"
+											id="lancheDaManha" styleClass="campo_alt"
+											label="Lanche da Manhã" converter="MerendaConverter">
+											<f:selectItem itemLabel="--Selecione--"
+												noSelectionOption="true" />
+											<f:selectItems var="lancheDaManha"
+												value="#{ControleMerenda.listarMerendas()}"
+												itemLabel="#{lancheDaManha.descricaoMerenda}"
+												itemValue="#{lancheDaManha}" />
+										</h:selectOneMenu>
+									</p:outputPanel>
+								</div>
+							</div>
+						</div>
+
+						<br />
+						<br />
+
+						<p:outputPanel id="cabecalhoLancheTarde">
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="ALMOÇO" />
+								<p:separator />
+							</div>
+
+							<div class="ui-grid-col-6">
+								<h:outputLabel value="LANCHE DA TARDE" />
+								<p:separator />
+							</div>
+
+						</p:outputPanel>
+
+						<div class="ui-grid ui-grid-responsive">
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<p:outputPanel id="lblAlmoco">
+										<h:selectOneMenu value="#{ControleMapa.almoco}" id="almoco"
+											styleClass="campo_alt" required="true" label="Almoço"
+											converter="MerendaConverter">
+											<f:selectItem itemLabel="--Selecione--"
+												noSelectionOption="true" />
+											<f:selectItems var="almoco"
+												value="#{ControleMerenda.listarMerendas()}"
+												itemLabel="#{almoco.descricaoMerenda}" itemValue="#{almoco}" />
+										</h:selectOneMenu>
+									</p:outputPanel>
+								</div>
+
+							</div>
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<p:outputPanel id="panelLancheTarde">
+										<h:selectOneMenu value="#{ControleMapa.lancheTarde}"
+											id="lancheDaTarde" styleClass="campo_alt"
+											label="Lanche da Tarde" converter="MerendaConverter">
+											<f:selectItem itemLabel="--Selecione--"
+												noSelectionOption="true" />
+											<f:selectItems var="lancheDaTarde"
+												value="#{ControleMerenda.listarMerendas()}"
+												itemLabel="#{lancheDaTarde.descricaoMerenda}"
+												itemValue="#{lancheDaTarde}" />
+										</h:selectOneMenu>
+									</p:outputPanel>
+								</div>
+							</div>
+						</div>
+
+						<br />
+						<br />
+
+						<p:outputPanel id="cabecalhoJantar">
+
+							<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+								<div class="ui-grid-col-6">
+									<h:outputLabel value="JANTAR" />
+									<p:separator />
+								</div>
+							</p:outputPanel>
+
+							<p:outputPanel rendered="#{ControleMapa.mapa.tipo == false}">
+								<div class="ui-grid-col-6">
+									<h:outputLabel value="Jantar" />
+									<p:separator />
+								</div>
+							</p:outputPanel>
+						</p:outputPanel>
+
+						<div class="ui-grid ui-grid-responsive">
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<p:outputPanel id="lblJantar">
+										<h:selectOneMenu value="#{ControleMapa.jantar}" id="jantar"
+											styleClass="campo_alt" required="true" label="Jantar"
+											converter="MerendaConverter">
+											<f:selectItem itemLabel="--Selecione--"
+												noSelectionOption="true" />
+											<f:selectItems var="jantar"
+												value="#{ControleMerenda.listarMerendas()}"
+												itemLabel="#{jantar.descricaoMerenda}" itemValue="#{jantar}" />
+										</h:selectOneMenu>
+									</p:outputPanel>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="botoes_principais">
+							<p:commandButton action="#{ControleMapa.inserirMapaPorRota()}"
+								value="Mapear" ajax="false" />
+						</div>
+
+						<br />
+					</h:form>
+				</p:tab>
+
+
+				<p:tab title="Mapear por instituição">
+					<br />
+					<div class="container-fluid">
+						<h:form id="formCadastroPorInstituicaoMapa">
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<h:outputLabel for="Tipo" value="Mapa para: " />
+									<p:selectOneRadio id="Tipo" value="#{ControleMapa.mapa.tipo}"
+										columns="1" label="tpMapa" required="true"
+										requiredMessage="Escolha para quem vai o mapa!">
+										<f:selectItem itemLabel="Escola" itemValue="false" />
+										<f:selectItem itemLabel="Creche" itemValue="true" />
+										<p:ajax
+											update="lblTurnoCafeDaManha lblTurnoAlmoco lblCafeDaManha panelLancheDaManha panelAlmoco panelJantar panelLancheDaTarde lblAlmoco panelCreches panelEscolas"
+											event="change" />
+									</p:selectOneRadio>
+								</div>
+								<br />
+								<p:outputPanel id="panelCreches">
+									<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+										<div id="form-group">
+											<h:outputLabel for="instituicaoCreches" value="Instituicao: " />
+											<h:selectOneMenu value="#{ControleMapa.mapa.instituicao}"
+												id="instituicaoCreches" styleClass="campo_alt"
+												required="true" label="Creche"
+												converter="InstituicaoConverter">
+												<f:selectItem itemLabel="--Selecione--"
+													noSelectionOption="true" />
+												<f:selectItems var="creche"
+													value="#{ControleInstituicao.listarCreches()}"
+													itemLabel="#{creche.nomeInstituicao}" itemValue="#{creche}" />
+												<p:ajax
+													update="lblTurnoCafeDaManha lblTurnoAlmoco panelJantar panelLancheDaManha panelLancheDaTarde"
+													event="change"
+													listener="#{ControleMapa.getTurnosInstituicao()}" />
+											</h:selectOneMenu>
+										</div>
+									</p:outputPanel>
+								</p:outputPanel>
+
+								<p:outputPanel id="panelEscolas">
+									<p:outputPanel rendered="#{ControleMapa.mapa.tipo == false}">
+										<div id="form-group">
+											<h:outputLabel for="instituicaoEscolas" value="Instituicao: " />
+											<h:selectOneMenu value="#{ControleMapa.mapa.instituicao}"
+												id="instituicaoEscolas" styleClass="campo_alt"
+												required="true" label="Escola"
+												converter="InstituicaoConverter">
+												<f:selectItem itemLabel="--Selecione--"
+													noSelectionOption="true" />
+												<f:selectItems var="escola"
+													value="#{ControleInstituicao.listarEscolas()}"
+													itemLabel="#{escola.nomeInstituicao}" itemValue="#{escola}" />
+												<p:ajax
+													update="lblTurnoCafeDaManha lblTurnoAlmoco panelJantar"
+													event="change"
+													listener="#{ControleMapa.getTurnosInstituicao()}" />
+											</h:selectOneMenu>
+										</div>
+									</p:outputPanel>
+								</p:outputPanel>
+							</div>
+							<div class="ui-grid-col-6">
+								<div id="form-group">
+									<p:outputLabel value="Data da Roteirização:"
+										for="dataRoteirizacao" />
+									<p:calendar id="dataRoteirizacao"
+										value="#{ControleMapa.mapa.dataroteirizacao}" locale="pt"
+										pattern="dd/MM/yyyy" />
+								</div>
+								<br />
+								<div id="form-group">
+									<h:outputLabel for="rotaMapa" value="Rota: " />
+									<h:selectOneMenu value="#{ControleMapa.mapa.rota}"
+										id="rotaMapa" styleClass="campo_alt" required="true"
+										label="rotaMapa" converter="RotaConverter">
+										<f:selectItem itemLabel="--Selecione--"
+											noSelectionOption="true" />
+										<f:selectItems var="rotaMapa"
+											value="#{ControleRota.listarRotas()}"
+											itemLabel="#{rotaMapa.nome}" itemValue="#{rotaMapa}" />
+									</h:selectOneMenu>
+								</div>
+							</div>
+
+							<div class="ui-grid ui-grid-responsive">
+								<br /> <br />
+								<div class="ui-grid-col-6">
+									<p:outputPanel id="lblCafeDaManha">
+										<p:outputPanel rendered="#{ControleMapa.mapa.tipo == false}">
+											<p:outputLabel value="Café da manhã" />
+										</p:outputPanel>
+										<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+											<p:outputLabel value="Desjejum" />
+										</p:outputPanel>
+									</p:outputPanel>
+									<p:separator />
+									<div id="form-group">
+										<p:outputPanel id="lblTurnoCafeDaManha">
+											<div class="ui-grid-col-3">
+												<div id="form-group">
+													<p:outputPanel
+														rendered="#{ControleMapa.mapa.tipo == false}">
+														<h:outputLabel value="Pré- Fundamental" />
+													</p:outputPanel>
+
+													<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+														<br />
+														<h:outputLabel value="Berçário I" />
+													</p:outputPanel>
+
+													<p:inputMask id="preCafeDaManha" styleClass="campo_alt_num"
+														var="turno" mask="9?99"
+														value="#{ControleMapa.turnoCafeDaManha.qtdAlunos1}" />
+												</div>
+											</div>
+											<div class="ui-grid-col-3">
+												<div id="form-group">
+													<p:outputPanel
+														rendered="#{ControleMapa.mapa.tipo == false}">
+														<h:outputLabel value="Ensino Fundamental I" />
+													</p:outputPanel>
+													<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+														<br />
+														<h:outputLabel value="Berçário II" />
+													</p:outputPanel>
+													<p:inputMask id="fundCafeDaManha1"
+														styleClass="campo_alt_num" mask="9?99"
+														value="#{ControleMapa.turnoCafeDaManha.qtdAlunos2}" />
+												</div>
+											</div>
+											<div class="ui-grid-col-3">
+												<div id="form-group">
+													<p:outputPanel
+														rendered="#{ControleMapa.mapa.tipo == false}">
+														<h:outputLabel value="Ensino Fundamental II" />
+													</p:outputPanel>
+													<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+														<br />
+														<h:outputLabel value="Maternal" />
+													</p:outputPanel>
+													<p:inputMask id="fundCafeDaManha2"
+														styleClass="campo_alt_num" mask="9?99"
+														value="#{ControleMapa.turnoCafeDaManha.qtdAlunos3}" />
+												</div>
+											</div>
+										</p:outputPanel>
+										<br />
+										<div class="ui-grid ui-grid-responsive">
+											<div id="form-group">
+												<h:outputLabel value="Merenda" />
+												<h:selectOneMenu value="#{ControleMapa.cafeDaManha}"
+													id="cafeDaManha" styleClass="campo_alt"
+													label="Café da manhã" converter="MerendaConverter">
+													<f:selectItem itemLabel="--Selecione--"
+														noSelectionOption="true" />
+													<f:selectItems var="cafeDaManha"
+														value="#{ControleMerenda.listarMerendas()}"
+														itemLabel="#{cafeDaManha.descricaoMerenda}"
+														itemValue="#{cafeDaManha}" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="ui-grid-col-6">
+									<p:outputPanel id="panelLancheDaManha">
+										<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+											<div class="ui-grid ui-grid-responsive">
+												<p:outputLabel value="Lanche da manhã" />
+												<p:separator />
+											</div>
+											<div class="ui-grid-col-3">
+												<div id="form-group">
+													<br />
+													<h:outputLabel value="Berçário I" />
+													<p:inputMask id="preLancheDaManha"
+														styleClass="campo_alt_num" mask="9?99"
+														value="#{ControleMapa.turnoLancheManha.qtdAlunos1}" />
+												</div>
+											</div>
+											<div class="ui-grid-col-3">
+												<div id="form-group">
+													<br />
+													<h:outputLabel value="Berçário II" />
+													<p:inputMask id="fundLancheDaManha1"
+														styleClass="campo_alt_num" mask="9?99"
+														value="#{ControleMapa.turnoLancheManha.qtdAlunos2}" />
+												</div>
+											</div>
+											<div class="ui-grid-col-3">
+												<div id="form-group">
+													<br />
+													<h:outputLabel value="Maternal" />
+													<p:inputMask id="fundLancheDaManha2"
+														styleClass="campo_alt_num" mask="9?99"
+														value="#{ControleMapa.turnoLancheManha.qtdAlunos3}" />
+												</div>
+											</div>
+											<br />
+											<div class="ui-grid ui-grid-responsive">
+												<div id="form-group">
+													<h:outputLabel value="Merenda" />
+													<h:selectOneMenu value="#{ControleMapa.lancheManha}"
+														id="lancheDaManha" styleClass="campo_alt"
+														label="Lanche da Manhã" converter="MerendaConverter">
+														<f:selectItem itemLabel="--Selecione--"
+															noSelectionOption="true" />
+														<f:selectItems var="lancheDaManha"
+															value="#{ControleMerenda.listarMerendas()}"
+															itemLabel="#{lancheDaManha.descricaoMerenda}"
+															itemValue="#{lancheDaManha}" />
+													</h:selectOneMenu>
+												</div>
+											</div>
+										</p:outputPanel>
+									</p:outputPanel>
+								</div>
+							</div>
+
+							<br />
+							<br />
+
+							<div class="ui-grid ui-grid-responsive">
+								<div class="ui-grid-col-6">
+									<p:outputLabel value="Almoço" />
+									<p:separator />
+								</div>
+								<p:outputPanel id="lblAlmoco">
+									<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+										<div class="ui-grid-col-6">
+											<p:outputLabel value="Lanche da tarde" />
+											<p:separator />
+										</div>
+									</p:outputPanel>
+								</p:outputPanel>
+							</div>
+							<div class="ui-grid ui-grid-responsive">
+								<p:outputPanel id="panelAlmoco">
+									<div class="ui-grid-col-6">
+										<p:outputPanel id="lblTurnoAlmoco">
+											<div class="ui-grid-col-3">
+												<div id="form-group">
+													<p:outputPanel
+														rendered="#{ControleMapa.mapa.tipo == false}">
+														<h:outputLabel value="Pré- Fundamental" />
+													</p:outputPanel>
+													<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+														<br />
+														<h:outputLabel value="Berçário I" />
+													</p:outputPanel>
+													<p:inputMask id="preAlmoco" styleClass="campo_alt_num"
+														mask="9?99" value="#{ControleMapa.turnoAlmoco.qtdAlunos1}" />
+												</div>
+											</div>
+											<div class="ui-grid-col-3">
+												<div id="form-group">
+													<p:outputPanel
+														rendered="#{ControleMapa.mapa.tipo == false}">
+														<h:outputLabel value="Ensino Fundamental I" />
+													</p:outputPanel>
+													<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+														<br />
+														<h:outputLabel value="Berçário II" />
+													</p:outputPanel>
+													<p:inputMask id="fundAlmoco1" styleClass="campo_alt_num"
+														mask="9?99" value="#{ControleMapa.turnoAlmoco.qtdAlunos2}" />
+												</div>
+											</div>
+											<div class="ui-grid-col-3">
+												<div id="form-group">
+													<p:outputPanel
+														rendered="#{ControleMapa.mapa.tipo == false}">
+														<h:outputLabel value="Ensino Fundamental II" />
+													</p:outputPanel>
+													<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+														<br />
+														<h:outputLabel value="Maternal" />
+													</p:outputPanel>
+													<p:inputMask id="fundAlmoco2" styleClass="campo_alt_num"
+														mask="9?99" value="#{ControleMapa.turnoAlmoco.qtdAlunos3}" />
+												</div>
+											</div>
+										</p:outputPanel>
+										<br />
+										<div class="ui-grid ui-grid-responsive">
+											<div id="form-group">
+												<h:outputLabel value="Merenda" />
+												<h:selectOneMenu value="#{ControleMapa.almoco}" id="almoco"
+													styleClass="campo_alt" label="Almoço"
+													converter="MerendaConverter">
+													<f:selectItem itemLabel="--Selecione--"
+														noSelectionOption="true" />
+													<f:selectItems var="almoco"
+														value="#{ControleMerenda.listarMerendas()}"
+														itemLabel="#{almoco.descricaoMerenda}"
+														itemValue="#{almoco}" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+									</div>
+									<div class="ui-grid-col-6">
+										<p:outputPanel id="panelLancheDaTarde">
+											<p:outputPanel rendered="#{ControleMapa.mapa.tipo}">
+												<div class="ui-grid-col-3">
+													<div id="form-group">
+														<br />
+														<h:outputLabel value="Berçário I" />
+														<p:inputMask id="preLancheDaTarde"
+															styleClass="campo_alt_num" mask="9?99"
+															value="#{ControleMapa.turnoLancheTarde.qtdAlunos1}" />
+													</div>
+												</div>
+												<div class="ui-grid-col-3">
+													<div id="form-group">
+														<br />
+														<h:outputLabel value="Berçário II" />
+														<p:inputMask id="fundLancheDaTarde1"
+															styleClass="campo_alt_num" mask="9?99"
+															value="#{ControleMapa.turnoLancheTarde.qtdAlunos2}" />
+													</div>
+												</div>
+												<div class="ui-grid-col-3">
+													<div id="form-group">
+														<br />
+														<h:outputLabel value="Maternal" />
+														<p:inputMask id="fundLancheDaTarde2"
+															styleClass="campo_alt_num" mask="9?99"
+															value="#{ControleMapa.turnoLancheTarde.qtdAlunos3}" />
+													</div>
+												</div>
+												<br />
+												<div class="ui-grid ui-grid-responsive">
+													<div id="form-group">
+														<h:outputLabel value="Merenda" />
+														<h:selectOneMenu value="#{ControleMapa.lancheTarde}"
+															id="lancheDaTarde" styleClass="campo_alt"
+															label="Lanche da Tarde" converter="MerendaConverter">
+															<f:selectItem itemLabel="--Selecione--"
+																noSelectionOption="true" />
+															<f:selectItems var="lancheDaTarde"
+																value="#{ControleMerenda.listarMerendas()}"
+																itemLabel="#{lancheDaTarde.descricaoMerenda}"
+																itemValue="#{lancheDaTarde}" />
+														</h:selectOneMenu>
+													</div>
+												</div>
+											</p:outputPanel>
+										</p:outputPanel>
+									</div>
+								</p:outputPanel>
+							</div>
+
+							<br />
+							<br />
+
+							<div class="ui-grid ui-grid-responsive">
+								<div class="ui-grid-col-6">
+									<p:outputLabel value="Jantar" />
+									<p:separator />
+								</div>
+							</div>
+							<div class="ui-grid ui-grid-responsive">
+								<p:outputPanel id="panelJantar">
+									<div class="ui-grid-col-6">
+										<div class="ui-grid-col-3">
+											<div id="form-group">
+												<h:outputLabel value="Pré- Fundamental" />
+												<p:inputMask id="preJantar" styleClass="campo_alt_num"
+													mask="9?99" value="#{ControleMapa.turnoJantar.qtdAlunos1}" />
+											</div>
+										</div>
+										<div class="ui-grid-col-3">
+											<div id="form-group">
+												<h:outputLabel value="Ensino Fundamental I" />
+												<p:inputMask id="fundJantar1" styleClass="campo_alt_num"
+													mask="9?99" value="#{ControleMapa.turnoJantar.qtdAlunos2}" />
+											</div>
+										</div>
+										<div class="ui-grid-col-3">
+											<div id="form-group">
+												<h:outputLabel value="Ensino Fundamental II" />
+												<p:inputMask id="fundJantar2" styleClass="campo_alt_num"
+													mask="9?99" value="#{ControleMapa.turnoJantar.qtdAlunos3}" />
+											</div>
+										</div>
+										<br />
+										<div class="ui-grid ui-grid-responsive">
+											<div id="form-group">
+												<h:outputLabel value="Merenda" />
+												<h:selectOneMenu value="#{ControleMapa.jantar}" id="jantar"
+													styleClass="campo_alt" label="Jantar"
+													converter="MerendaConverter">
+													<f:selectItem itemLabel="--Selecione--"
+														noSelectionOption="true" />
+													<f:selectItems var="jantar"
+														value="#{ControleMerenda.listarMerendas()}"
+														itemLabel="#{jantar.descricaoMerenda}"
+														itemValue="#{jantar}" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+									</div>
+								</p:outputPanel>
+							</div>
+							<br />
+							<div class="ui-grid ui-grid-responsive">
+								<div class="botoes_principais">
+									<p:commandButton action="#{ControleMapa.inserirMapaPorInstituicao()}"
+										value="Mapear" ajax="false" />
+								</div>
+							</div>
+						</h:form>
+					</div>
+
+
+				</p:tab>
+
+				<p:tab title="Consultar mapa das Escolas">
+					<div class="container-fluid">
+						<h:form id="formConsultaMapaEscola">
+							<div class="tabela_consulta_mapa_escola">
+								<p:dataTable id="datatableEscolaMapeada"
+									value="#{ControleMapa.escolasMapeadas()}" var="escolasMapeadas"
+									paginator="true" rows="10" style="margin-bottom:20px"
+									paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+									rowsPerPageTemplate="10,30,50"
+									emptyMessage="Nenhum registro foi encontrado">
+
+									<f:facet name="header">
+ 									MAPA DAS ESCOLAS
+ 									</f:facet>
+
+									<p:column headerText="Rota" filterBy="#{escolasMapeadas.rota}"
+										filterMatchMode="contains" width="10%">
+										<h:outputText value="#{escolasMapeadas.rota.nome}" />
+									</p:column>
+
+									<p:column headerText="Escola"
+										filterBy="#{escolasMapeadas.instituicao.nomeInstituicao}"
+										filterMatchMode="contains" width="50%">
+										<h:outputText
+											value="#{escolasMapeadas.instituicao.nomeInstituicao}" />
+									</p:column>
+
+									<p:column headerText="Data Roteirização"
+										filterBy="#{escolasMapeadas.dataroteirizacao}"
+										filterMatchMode="contains" width="15%">
+										<h:outputText value="#{escolasMapeadas.dataroteirizacao}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+									</p:column>
+
+									<p:column headerText="Ação" colspan="1" exportable="false"
+										width="15%">
+
+										<p:commandButton update="datatableEscolaMapeada" action="#"
+											actionListener="#" icon="ui-icon-pencil" title="Editar"
+											styleClass="botao_verde" process="@this" />
+
+										<p:commandButton
+											action="#{ControleMapa.excluirMapa(escolasMapeadas)}"
+											icon="ui-icon-trash" title="Excluir"
+											styleClass="botao_vermelho" update="datatableEscolaMapeada">
+											<p:confirm header="Confirmação de exclusão"
+												message="Tem certeza que deseja excluir a escola?"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+										<p:confirmDialog global="true" showEffect="fade"
+											hideEffect="fade">
+											<div align="center">
+												<p:commandButton value="Sim" type="button"
+													styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+												<p:commandButton value="Não" type="button"
+													styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+											</div>
+										</p:confirmDialog>
+									</p:column>
+								</p:dataTable>
+								<p:blockUI block="datatableEscolaMapeada"
+									trigger="datatableEscolaMapeada">
+									<h:outputLabel value="Loading..." />
+									<br />
+									<p:progressBar widgetVar="pbAjax" ajax="true" value="50"
+										styleClass="animated" global="false" />
+								</p:blockUI>
+							</div>
+						</h:form>
+
+					</div>
+
+				</p:tab>
+				<p:tab title="Consultar mapa das Creches">
+					<div class="container-fluid">
+						<h:form id="formConsultaMapaCreche">
+							<div class="tabela_consulta_mapa_creche">
+								<p:dataTable id="datatableCrecheMapeada"
+									value="#{ControleMapa.crechesMapeadas()}" var="crechesMapeadas"
+									paginator="true" rows="10" style="margin-bottom:20px"
+									paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+									rowsPerPageTemplate="10,30,50"
+									emptyMessage="Nenhum registro foi encontrado">
+
+									<f:facet name="header">
+ 									MAPA DAS CRECHES
+ 									</f:facet>
+
+									<p:column headerText="Rota" filterBy="#{crechesMapeadas.rota}"
+										filterMatchMode="contains" width="10%">
+										<h:outputText value="#{crechesMapeadas.rota.nome}" />
+									</p:column>
+
+									<p:column headerText="Creche"
+										filterBy="#{crechesMapeadas.instituicao.nomeInstituicao}"
+										filterMatchMode="contains" width="50%">
+										<h:outputText
+											value="#{crechesMapeadas.instituicao.nomeInstituicao}" />
+									</p:column>
+
+									<p:column headerText="Data Roteirização"
+										filterBy="#{crechesMapeadas.dataroteirizacao}"
+										filterMatchMode="contains" width="15%">
+										<h:outputText value="#{crechesMapeadas.dataroteirizacao}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+									</p:column>
+
+									<p:column headerText="Ação" colspan="1" exportable="false"
+										width="15%">
+
+										<p:commandButton update="datatableCrecheMapeada" action="#"
+											actionListener="#" icon="ui-icon-pencil" title="Editar"
+											styleClass="botao_verde" process="@this" />
+
+										<p:commandButton
+											action="#{ControleMapa.excluirMapa(crechesMapeadas)}"
+											icon="ui-icon-trash" title="Excluir"
+											styleClass="botao_vermelho" update="datatableCrecheMapeada">
+											<p:confirm header="Confirmação de exclusão"
+												message="Tem certeza que deseja excluir a creche?"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+										<p:confirmDialog global="true" showEffect="fade"
+											hideEffect="fade">
+											<div align="center">
+												<p:commandButton value="Sim" type="button"
+													styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+												<p:commandButton value="Não" type="button"
+													styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+											</div>
+										</p:confirmDialog>
+									</p:column>
+								</p:dataTable>
+								<p:blockUI block="datatableCrecheMapeada"
+									trigger="datatableCrecheMapeada">
+									<h:outputLabel value="Loading..." />
+									<br />
+									<p:progressBar widgetVar="pbAjax" ajax="true" value="50"
+										styleClass="animated" global="false" />
+								</p:blockUI>
+							</div>
+						</h:form>
+
+					</div>
+
+				</p:tab>
+			</p:tabView>
+			<br />
+
+			<div class="col-md-12"></div>
+		</div>
+	</div>
+
+</h:body>
+</html>

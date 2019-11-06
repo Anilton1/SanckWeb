@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/alterados.css"></link>
+	<link rel="stylesheet" type="text/css"
+		href="lib/bootstrap3/css/bootstrap.css"></link>
+
+	<title>Cadastro de Itens</title>
+
+</h:head>
+<h:body>
+
+	<div id="header">
+		<ui:insert name="header">
+			<ui:include src="template/header.xhtml"></ui:include>
+		</ui:insert>
+	</div>
+	<div class="titulo_pagina">CADASTRO DE ITENS</div>
+	<br></br>
+	<br></br>
+	<div class="container">
+		<div class="row">
+			<p:tabView>
+				<p:tab title="Cadastrar">
+
+					<h:form id="formCadastroItem">
+						<p:growl autoUpdate="true" id="messageInserir" showDetail="true"
+							showSummary="true" />
+						<div class="ui-grid-col-6">
+							<div id="form-group">
+
+								<h:outputLabel for="Tipo" value="Tipo do Item: " />
+								<p:selectOneRadio id="Tipo" value="#{ControleItem.item.tipo}"
+									columns="1" label="tpItem" required="true"
+									requiredMessage="Escolha o tipo do Item!">
+									<f:selectItem itemLabel="Item Quente  " itemValue="false" />
+									<f:selectItem itemLabel="Item Frio" itemValue="true" />
+									<p:ajax update="panelGrama" event="change" />
+								</p:selectOneRadio>
+							</div>
+
+							<br />
+
+							<div id="form-group">
+								<h:outputLabel for="descricao" value="Nome do Item:" />
+								<p:inputText id="descricao" styleClass="campo_alt"
+									value="#{ControleItem.item.descricaoItem}" required="true"
+									label="Descrição"
+									requiredMessage="Campo vazio! Por favor preencha o nome do item!"
+									validatorMessage="Descrição inválida! Por favor preencher sem caracteres especiais!">
+									<f:validateRegex pattern="^[a-zA-Z Á-ú 0-9]+$" />
+								</p:inputText>
+							</div>
+						</div>
+
+						<div class="ui-grid-col-6">
+							<div id="form-group">
+								<h:outputLabel for="percapta" value="Per capita" />
+								<p:inputText id="percapta" styleClass="campo_alt"
+									label="Per capita" value="#{ControleItem.item.percapita}"
+									converterMessage="Valor inválido! Por favor preencher apenas números!" />
+							</div>
+							<p:outputPanel id="panelGrama">
+								<p:outputPanel rendered="#{ControleItem.item.tipo}">
+									<div id="form-group">
+										<h:outputLabel for="grama" value="Grama-mL" />
+										<p:inputText id="grama" styleClass="campo_alt"
+											value="#{ControleItem.item.grama}" label="grama"
+											converterMessage="Valor inválido! Por favor preencher apenas números!" />
+									</div>
+								</p:outputPanel>
+							</p:outputPanel>
+						</div>
+						<div class="ui-grid ui-grid-responsive">
+							<div class="botoes_principais">
+								<p:commandButton action="#{ControleItem.inserirItem()}"
+									value="Cadastrar" ajax="false" />
+							</div>
+						</div>
+						<br />
+					</h:form>
+				</p:tab>
+				<p:tab title="Consultar">
+					<div class="container-fluid">
+						<h:form id="formConsultaItem">
+							<p:growl autoUpdate="true" showDetail="true" showSummary="true"
+								id="messageDataTable" />
+							<div class="tabela_principal">
+								<p:dataTable id="datatable"
+									value="#{ControleItem.listarItens()}" var="itens"
+									cellpadding="3" paginator="true" rows="10"
+									resizableColumns="true" style="margin-bottom:20px"
+									paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+									rowsPerPageTemplate="10,30,50"
+									emptyMessage="Nenhum registro foi encontrado">
+
+									<f:facet name="header">
+            			ITENS CADASTRADOS
+            			
+									</f:facet>
+									<p:column headerText="Nome do Item" filterMatchMode="contains"
+										filterBy="#{itens.descricaoItem}" width="20%">
+										<h:outputText value="#{itens.descricaoItem}" />
+									</p:column>
+
+									<p:column headerText="Per capita">
+										<h:outputText value="#{itens.percapita}" />
+									</p:column>
+
+									<p:column headerText="Grama/mL">
+										<h:outputText value="#{itens.grama}" />
+									</p:column>
+									<p:column headerText="Ação" colspan="1" exportable="false"
+										width="15%">
+
+										<p:commandButton update="@form"
+											action="#{ControleItem.alterarDialog()}"
+											actionListener="#{ControleItem.selecionarItem(itens)}"
+											icon="ui-icon-pencil" title="Editar" styleClass="botao_verde"
+											process="@this">
+										</p:commandButton>
+
+										<p:commandButton update="datatable" icon="ui-icon-trash"
+											title="Excluir" styleClass="botao_vermelho"
+											action="#{ControleItem.deletarItem(itens)}">
+											<p:confirm header="Confirmação de Exclusão"
+												message="Você tem certeza que deseja excluir o item #{itens.descricaoItem}?"
+												icon="ui-icon-alert" id="btnExclusao" />
+										</p:commandButton>
+
+										<p:confirmDialog global="true" showEffect="fade"
+											hideEffect="fade">
+											<p:commandButton value="Sim" type="button"
+												styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+											<p:commandButton value="Não" type="button"
+												styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+										</p:confirmDialog>
+									</p:column>
+
+								</p:dataTable>
+
+								<p:blockUI block="datatable" trigger="datatable">
+									<h:outputLabel value="Loading..." />
+									<br />
+									<p:progressBar widgetVar="pbAjax" ajax="true" value="50"
+										styleClass="animated" global="false" />
+								</p:blockUI>
+							</div>
+						</h:form>
+
+					</div>
+
+				</p:tab>
+			</p:tabView>
+		</div>
+	</div>
+</h:body>
+</html>

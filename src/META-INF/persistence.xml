@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+	<persistence-unit name="REXPRESS">
+		<class>br.com.rexpress.valuesObjects.Descartavel</class>
+		<class>br.com.rexpress.valuesObjects.Endereco</class>
+		<class>br.com.rexpress.valuesObjects.Instituicao</class>
+		<class>br.com.rexpress.valuesObjects.Item</class>
+		<class>br.com.rexpress.valuesObjects.ItemMapaHist</class>
+		<class>br.com.rexpress.valuesObjects.Mapa</class>
+		<class>br.com.rexpress.valuesObjects.Merenda</class>
+		<class>br.com.rexpress.valuesObjects.MerendaMapaHist</class>
+		<class>br.com.rexpress.valuesObjects.Rota</class>
+		<class>br.com.rexpress.valuesObjects.Turno</class>
+		<class>br.com.rexpress.valuesObjects.TurnoMapa</class>
+		<class>br.com.rexpress.valuesObjects.Usuario</class>
+		<class>br.com.rexpress.valuesObjects.ItemMapa</class>
+
+
+		<properties>
+			<property name="hibernate.connection.username" value="postgres" />
+			<property name="hibernate.connection.password" value="123456" />
+			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/REXPRESS" />
+			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
+			<property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.connection.autocommit" value="false" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+
+
+
+			<property name="hibernate.show_sql" value="true" />
+
+			<property name="hibernate.format_sql" value="true" />
+
+		</properties>
+
+	</persistence-unit>
+
+</persistence>

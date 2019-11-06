@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/alterados.css"></link>
+	<link rel="stylesheet" type="text/css"
+		href="lib/bootstrap3/css/bootstrap.css"></link>
+
+</h:head>
+<h:body>
+	<div class="container">
+		<div class="row">
+			<h:form id="formAlterarUsuario">
+				<p:messages id="messageAlterar" showDetail="true" showSummary="true" />
+				<div class="ui-grid-col-6">
+					<div id="form-group">
+						<h:outputLabel for="usuario" value="Nome Completo" />
+						<p:inputText id="usuario" styleClass="campo_alt"
+							value="#{ControleUsuario.usuarioSelecionado.nomeUsuario}"
+							required="true"
+							requiredMessage="Por favor preencha o campo!"
+							validatorMessage="Nome inválido! Favor preencher o nome COMPLETO e sem números ou caracteres especiais.">
+							<f:validateRegex pattern="^[a-zA-Z Á-ú]+ [a-zA-Z Á-ú]+$" />
+						</p:inputText>
+						<p:message for="usuario" />
+						<div id="form-group">
+							<h:outputLabel for="login" value="Login:" />
+							<p:inputText id="login" styleClass="campo_alt"
+								value="#{ControleUsuario.usuarioSelecionado.login}"
+								required="true"
+								requiredMessage="Por favor preencha o campo!"
+								validatorMessage="Login inválido! Favor preencher sem caracteres especiais.">
+								<f:validateRegex pattern="^[a-zA-Z Á-ú _ 0-9]+$" />
+							</p:inputText>
+							<p:message for="login" />
+						</div>
+					</div>
+
+				</div>
+
+				<div class="ui-grid-col-6">
+
+					<div id="form-group">
+						<h:outputLabel for="senha1" value="Senha:" />
+						<p:password id="pwd1"
+							value="#{ControleUsuario.usuarioSelecionado.senha}" match="pwd2"
+							label="Senha 1" required="true" styleClass="campo_alt"
+							feedback="true" validatorMessage="Senhas não conferem!"/>
+					</div>
+					<div id="form-group">
+						<h:outputLabel for="senha2" value="Digite a senha novamente:" />
+						<p:password id="pwd2"
+							value="#{ControleUsuario.usuarioSelecionado.senha}"
+							label="Senha 2" required="true" styleClass="campo_alt"
+							feedback="true" validatorMessage="Senhas não conferem!"/>
+					</div>
+
+				</div>
+
+				<div class="botoes_principais">
+					<p:commandButton action="#{ControleUsuario.alterarUsuario()}"
+						value="Salvar" update="messageAlterar" />
+				</div>
+
+				<br />
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/alterados.css"></link>
+	<link rel="stylesheet" type="text/css"
+		href="lib/bootstrap3/css/bootstrap.css"></link>
+
+</h:head>
+<h:body>
+	<div class="container">
+		<div class="row">
+			<h:form id="formAlterarMerenda">
+				<p:messages autoUpdate="true" for="menssageAlterar"
+					showDetail="true" showSummary="true" />
+				<div class="ui-grid-col-6">
+					<div id="form-group">
+						<h:outputLabel for="descMerenda" value="Nome da Merenda: " />
+						<p:inputText id="descMerenda" styleClass="campo_alt"
+							value="#{ControleMerenda.merendaSelecionado.descricaoMerenda}"
+							required="true" placeholder="Digite o nome da merenda"
+							label="Nome Merenda"
+							validatorMessage="Descrição inválida! Favor preencher sem números ou caracteres especiais.">
+							<f:validateRegex pattern="^[a-zA-Z Á-ú]+$" />
+						</p:inputText>
+						<p:messages for="descMerenda" />
+					</div>
+				</div>
+
+				<div class="ui-grid ui-grid-responsive">
+					<div class="ui-grid-col-6">
+						<h:outputLabel for="descartavelMerenda"
+							value="Selecione os descartaveis da merenda" />
+						<br />
+						<p:pickList id="pickListDescartaveis"
+							value="#{ControleMerenda.descartavelDualList}" var="descartavel"
+							itemLabel="#{descartavel.descricao}" itemValue="#{descartavel}"
+							showSourceFilter="true" responsive="true"
+							filterMatchMode="contains" showCheckbox="true"
+							converter="DescartavelConverterDualList" showTargetFilter="true">
+
+							<f:facet name="sourceCaption">Lista de Descartáveis</f:facet>
+							<f:facet name="targetCaption">Descartáveis Selecionados</f:facet>
+						</p:pickList>
+						<br />
+					</div>
+
+					<div class="ui-grid-col-6">
+						<h:outputLabel for="itensMerenda"
+							value="Selecione os itens da merenda" />
+						<br />
+						<p:pickList id="pickListItem"
+							value="#{ControleMerenda.itemDualList}" var="item"
+							itemLabel="#{item.descricaoItem}" itemValue="#{item}"
+							showSourceFilter="true" responsive="true"
+							filterMatchMode="contains" showCheckbox="true"
+							converter="ItemConverterDualList" showTargetFilter="true"
+							required="true"
+							requiredMessage="Por favor selecione ao menos um item para merenda!">
+							<f:facet name="sourceCaption">Lista de Itens</f:facet>
+							<f:facet name="targetCaption">Itens Selecionados</f:facet>
+						</p:pickList>
+						<p:messages for="pickListItem" />
+						<br></br>
+
+					</div>
+
+				</div>
+
+				<div class="botoes_principais">
+					<p:commandButton action="#{ControleMerenda.alterarMerenda()}"
+						value="Salvar" ajax="false" validateClient="false" />
+				</div>
+
+				<br />
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>

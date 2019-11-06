@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/alterados.css"></link>
+	<link rel="stylesheet" type="text/css"
+		href="lib/bootstrap3/css/bootstrap.css"></link>
+
+</h:head>
+<h:body>
+	<div class="container">
+		<div class="row">
+			<h:form id="formAlterarRota">
+				<p:messages autoUpdate="true" for="menssageAlterar"
+					showDetail="true" showSummary="true" />
+				<div class="ui-grid-col-6">
+					<div id="form-group">
+						<h:outputLabel for="nome" value="Nome da Rota:" />
+						<p:inputText id="nome" styleClass="campo_alt"
+							value="#{ControleRota.aRotaSelecionado.nome}" required="true"
+							requiredMessage="Campo vazio! Por favor preencha o nome da rota!"
+							validatorMessage="Nome da Rota inválido! Favor preencher sem caracteres especiais.">
+							<f:validateRegex pattern="^[a-zA-Z Á-ú 0-9]+$" />
+						</p:inputText>
+						<p:message for="nome" />
+					</div>
+
+					<div id="form-group">
+						<h:outputLabel for="Descricao" value="Descrição da Rota:" />
+						<p:inputTextarea id="Descricao" rows="6" cols="58"
+							autoResize="true"
+							value="#{ControleRota.aRotaSelecionado.descricaoRota}" />
+					</div>
+
+				</div>
+
+				<div class="ui-grid-col-6"></div>
+
+				<div class="botoes_principais">
+					<p:commandButton action="#{ControleRota.alterarRota()}"
+						value="Salvar" ajax="false" validateClient="false" />
+				</div>
+
+				<br />
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>

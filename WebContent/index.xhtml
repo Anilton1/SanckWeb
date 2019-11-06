@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title>Acesso do Usuário</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/alterados.css"></link>
+	<link rel="stylesheet" type="text/css"
+		href="lib/bootstrap3/css/bootstrap.css"></link>
+</h:head>
+
+<h:body>
+	<div id="tudo" align="center">
+		<p:growl id="msg" showDetail="true" life="3000" />
+		<h:form id="loginForm">
+			<p:messages id="messages" />
+			<p:graphicImage value="Imagens/snack-web-sistema.png"
+				styleClass="imagem_index" />
+			<p:panel header="Login" styleClass="header_login"
+				style="margin: 0px !important">
+				<div id="form-group" style="padding-bottom: 20px !important;">
+					<h:outputLabel value="Usuário:" style="float: none;"
+						styleClass="required_labels" />
+					<p:inputText value="#{ControleUsuario.aUserSession.login}" id="campo_usuario" style="campo_alt"
+						required="true"
+						validatorMessage="Login inválido! Favor preencher sem caracteres especiais.">
+						<f:validateRegex pattern="^[a-zA-Z Á-ú _ 0-9]+$" />
+					</p:inputText>
+				</div>
+				<div id="form-group">
+					<h:outputLabel value="Senha:" style="float: none;"
+						styleClass="required_labels" />
+					<p:password value="#{ControleUsuario.aUserSession.senha}" styleClass="campo_alt" maxlength="20"
+						id="campo_senha" required="true" />
+				</div>
+				<p:commandButton ajax="true" value="Entrar" action="#{ControleUsuario.beginSession()}"
+					required="true" update="loginForm" />
+			</p:panel>
+		</h:form>
+	</div>
+</h:body>
+</html>
+

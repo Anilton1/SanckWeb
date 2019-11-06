@@ -1,0 +1,100 @@
+.ui-datatable-even {
+	background-color: #FFF !important;
+}
+
+table tbody tr.ui-widget-odd {
+	border: 0px solid #dddddd !important;
+	background-color: #088A29 !important;
+	color: #333333;
+	border-radius: 26px;
+}
+
+.ui-datatable-odd {
+	background-color: #459e00 !important;
+}
+
+table tbody tr td.ui-panelgrid-cell {
+	border-width: 5px !important;
+	border-style: none !important;
+}
+
+.ui-datatable-header, .header_tabelas {
+	border-bottom: 0px none;
+	background: #459e00;
+	/*	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;*/
+	font-size: 20px;
+	color: #fff;
+	text-shadow: 1px 1px 2px #292929;
+}
+/*table thead tr th .ui-column-title{
+	color: #F49046;
+}*/
+.ui-menu.ui-widget li>.ui-menuitem-link.ui-state-hover {
+	background-image: linear-gradient(to bottom, #088A29, #04B431)
+		!important;
+	background-color: #459e00;
+}
+
+.ui-radiobutton {
+	width: 20px;
+}
+
+.ui-radiobutton-icon {
+	margin-left: 0px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
+	/* margin-top: 3px; */
+	margin-left: -4px;
+}
+
+.ui-selectonemenu label.ui-selectonemenu-label {
+	width: 100% !important;
+}
+
+.ui-grid-col-6 #form-group {
+	margin-bottom: 15px;
+}
+
+.ui-grid-col-6 #form-group .campo_alt {
+	height: 46px;
+	padding: 10px 16px;
+	font-size: 16px;
+	line-height: 1.3333333;
+	border-radius: 15px;
+	width: 69%;
+	border-left: 5px solid rgb(0, 144, 73);
+}
+
+.ui-grid-col-3 #form-group .campo_alt_num1 {
+	height: 46px;
+	padding: 10px 16px;
+	font-size: 16px;
+	line-height: 1.3333333;
+	border-radius: 15px;
+	width: 120px;
+	border-left: 5px solid rgb(0, 144, 73);
+}
+
+.ui-grid-col-6 #form-group .campo_alt_num {
+	height: 46px;
+	padding: 10px 16px;
+	font-size: 16px;
+	line-height: 1.3333333;
+	border-radius: 15px;
+	width: 120px;
+	border-left: 5px solid rgb(0, 144, 73);
+}
+
+.ui-datagrid {
+	border: none;
+}
+
+.ui-datalist-data {
+	border: 0px;
+}
+
+.ui-datalist-content {
+	border: 0px;
+}

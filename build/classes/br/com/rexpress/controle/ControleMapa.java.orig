@@ -1,0 +1,237 @@
+package br.com.rexpress.controle;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+
+import org.primefaces.component.calendar.Calendar;
+
+import br.com.rexpress.dao.InstituicaoDAO;
+import br.com.rexpress.dao.MapaDAO;
+import br.com.rexpress.dao.MerendaMapaHistDAO;
+import br.com.rexpress.rn.RNMerenda;
+import br.com.rexpress.valuesObjects.Instituicao;
+import br.com.rexpress.valuesObjects.Mapa;
+import br.com.rexpress.valuesObjects.Merenda;
+import br.com.rexpress.valuesObjects.MerendaMapaHist;
+import br.com.rexpress.valuesObjects.Turno;
+import br.com.rexpress.valuesObjects.TurnoMapa;
+
+@ManagedBean(name = "ControleMapa")
+@RequestScoped
+public class ControleMapa {
+	private Merenda cafeDaManha;
+	private Merenda lancheManha;
+	private Merenda almoco;
+	private Merenda lancheTarde;
+	private Merenda jantar;
+	private RNMerenda rnMerenda;
+	private Mapa aMapa;
+	private TurnoMapa aTurno1_1;
+	private TurnoMapa aTurno1_2;
+	private TurnoMapa aTurno2_1;
+	private TurnoMapa aTurno2_2;
+	private TurnoMapa aTurno3;
+	private MapaDAO aMapaDAO = new MapaDAO();
+	private InstituicaoDAO aInstituicaoDAO = new InstituicaoDAO();
+	private List<MerendaMapaHist> merendas = new ArrayList<MerendaMapaHist>();
+	private MerendaMapaHist merendaHist = new MerendaMapaHist();
+	private TurnoMapa turnoMapa = new TurnoMapa();
+
+	public ControleMapa() {
+		cafeDaManha = new Merenda();
+		lancheManha = new Merenda();
+		almoco = new Merenda();
+		lancheTarde = new Merenda();
+		jantar = new Merenda();
+		aMapa = new Mapa();
+		aTurno1_1 = new TurnoMapa();
+		aTurno1_2 = new TurnoMapa();
+		aTurno2_1 = new TurnoMapa();
+		aTurno2_2 = new TurnoMapa();
+		aTurno3 = new TurnoMapa();
+	}
+
+	public List<Merenda> autoCompleteMerenda(String query) {
+		rnMerenda = new RNMerenda();
+		return rnMerenda.completeMerenda(query);
+	}
+
+	public void inserirMapaGeral() {
+		MerendaMapaHistDAO daoMerenda = new MerendaMapaHistDAO();
+		
+		List<Instituicao> instituicaoPendente = new ArrayList<Instituicao>();
+		instituicaoPendente = aInstituicaoDAO.listarEscolas();
+		
+//				aMapaDAO.escolasPendentesPorData(aMapa.getDataroteirizacao());
+
+		for (Instituicao instituicao : instituicaoPendente) {
+			merendas.add(merendaHist.valueOf(cafeDaManha));
+			merendas.add(merendaHist.valueOf(almoco));
+			merendas.add(merendaHist.valueOf(jantar));
+			aMapa.setMerendaMapaHists(merendas);
+			aMapa.setDataProcessamento(new Date());
+			aMapa.setTipo(instituicao.getTipo());
+			aMapa.setRota(instituicao.getRota());
+
+			aMapa.setInstituicao(instituicao);
+			aMapa.setTurnoMapas(turnoMapa.valueOf(instituicao.getTurnos()));
+			
+			aMapaDAO.inserirMerendas(aMapa);
+			
+			List<MerendaMapaHist> merendaMapa = new ArrayList<MerendaMapaHist>();
+			List<MerendaMapaHist> merendasAdd = new ArrayList<MerendaMapaHist>();
+			
+			for (MerendaMapaHist merenda : aMapa.getMerendaMapaHists()) {
+				merendaMapa = daoMerenda.listarSeExiste(merenda);
+				if(!merendaMapa.isEmpty());{
+					merendasAdd.addAll(merendaMapa);
+				}
+			}
+			aMapa.setMerendaMapaHists(merendasAdd);
+			aMapaDAO.inserir(aMapa);
+			aMapaDAO.inserirTurnos(aMapa);
+		}
+
+	}
+
+	public void inserirMapaPorRota() {
+		MerendaMapaHistDAO daoMerenda = new MerendaMapaHistDAO();
+		
+		List<Instituicao> instituicaoPendente = new ArrayList<Instituicao>();
+		instituicaoPendente = aInstituicaoDAO.listarInstituicaoPorRota(aMapa.getRota());
+		
+//				aMapaDAO.escolasPendentesPorData(aMapa.getDataroteirizacao());
+
+		for (Instituicao instituicao : instituicaoPendente) {
+			merendas.add(merendaHist.valueOf(cafeDaManha));
+			merendas.add(merendaHist.valueOf(almoco));
+			merendas.add(merendaHist.valueOf(jantar));
+			aMapa.setMerendaMapaHists(merendas);
+			aMapa.setDataProcessamento(new Date());
+			aMapa.setTipo(instituicao.getTipo());
+
+			aMapa.setInstituicao(instituicao);
+			aMapa.setTurnoMapas(turnoMapa.valueOf(instituicao.getTurnos()));
+			
+			aMapaDAO.inserirMerendas(aMapa);
+			
+			List<MerendaMapaHist> merendaMapa = new ArrayList<MerendaMapaHist>();
+			List<MerendaMapaHist> merendasAdd = new ArrayList<MerendaMapaHist>();
+			
+			for (MerendaMapaHist merenda : aMapa.getMerendaMapaHists()) {
+				merendaMapa = daoMerenda.listarSeExiste(merenda);
+				if(!merendaMapa.isEmpty());{
+					if(merendasAdd.containsAll(merendaMapa))
+					merendasAdd.addAll(merendaMapa);
+				}
+			}
+			aMapa.setMerendaMapaHists(merendasAdd);
+			aMapaDAO.inserir(aMapa);
+			aMapaDAO.inserirTurnos(aMapa);
+			
+			merendaMapa = new ArrayList<MerendaMapaHist>();
+			merendasAdd = new ArrayList<MerendaMapaHist>();
+		}
+
+	}
+
+	public List<Mapa> escolasMapeadas(){
+		return aMapaDAO.listarEscolasMapeadas();
+	}
+	
+	public void excluirMapa(Mapa pMapa){
+		aMapaDAO.deletar(pMapa);
+	}
+	
+	public Merenda getCafeDaManha() {
+		return cafeDaManha;
+	}
+
+	public void setCafeDaManha(Merenda cafeDaManha) {
+		this.cafeDaManha = cafeDaManha;
+	}
+
+	public Merenda getLancheManha() {
+		return lancheManha;
+	}
+
+	public void setLancheManha(Merenda lancheManha) {
+		this.lancheManha = lancheManha;
+	}
+
+	public Merenda getAlmoco() {
+		return almoco;
+	}
+
+	public void setAlmoco(Merenda almoco) {
+		this.almoco = almoco;
+	}
+
+	public Merenda getLancheTarde() {
+		return lancheTarde;
+	}
+
+	public void setLancheTarde(Merenda lancheTarde) {
+		this.lancheTarde = lancheTarde;
+	}
+
+	public Merenda getJantar() {
+		return jantar;
+	}
+
+	public void setJantar(Merenda jantar) {
+		this.jantar = jantar;
+	}
+
+	public TurnoMapa getaTurno1_1() {
+		return aTurno1_1;
+	}
+
+	public void setaTurno1_1(TurnoMapa aTurno1_1) {
+		this.aTurno1_1 = aTurno1_1;
+	}
+
+	public TurnoMapa getaTurno1_2() {
+		return aTurno1_2;
+	}
+
+	public void setaTurno1_2(TurnoMapa aTurno1_2) {
+		this.aTurno1_2 = aTurno1_2;
+	}
+
+	public TurnoMapa getaTurno2_1() {
+		return aTurno2_1;
+	}
+
+	public void setaTurno2_1(TurnoMapa aTurno2_1) {
+		this.aTurno2_1 = aTurno2_1;
+	}
+
+	public TurnoMapa getaTurno2_2() {
+		return aTurno2_2;
+	}
+
+	public void setaTurno2_2(TurnoMapa aTurno2_2) {
+		this.aTurno2_2 = aTurno2_2;
+	}
+
+	public TurnoMapa getaTurno3() {
+		return aTurno3;
+	}
+
+	public void setaTurno3(TurnoMapa aTurno3) {
+		this.aTurno3 = aTurno3;
+	}
+
+	public Mapa getMapa() {
+		return aMapa;
+	}
+
+	public void setMapa(Mapa aMapa) {
+		this.aMapa = aMapa;
+	}
+}
